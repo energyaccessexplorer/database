@@ -1,6 +1,6 @@
 create table if not exists
 	files (
-		id uuid primary key
+	  id uuid primary key
 	, label varchar(32) not null default current_timestamp::text
 	, dataset_id uuid references datasets (id) not null
 	, test boolean default true

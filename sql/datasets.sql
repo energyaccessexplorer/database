@@ -1,22 +1,22 @@
 create table if not exists
 	datasets (
-		id uuid primary key
-	,	category_name varchar(32) not null
+	  id uuid primary key
+	, category_name varchar(32) not null
 	, category_id uuid references categories (id) not null
 	, country_id uuid references countries (id) not null
 	, online bool default false
-	,	unique(category_id, country_id)
+	, unique(category_id, country_id)
 	, presets jsonb
 	, metadata jsonb default '{
-		"description": null,
-		"suggested_citation": null,
-		"cautions": null,
-		"spatial_resolution": null,
-		"license": null,
-		"sources": null,
-		"content_date": 0,
-		"download_original_url": null,
-		"learn_more_url": null
+	  "description": null,
+	  "suggested_citation": null,
+	  "cautions": null,
+	  "spatial_resolution": null,
+	  "license": null,
+	  "sources": null,
+	  "content_date": 0,
+	  "download_original_url": null,
+	  "learn_more_url": null
 	}'
 	, configuration jsonb
 

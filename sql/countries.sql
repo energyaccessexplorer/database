@@ -1,6 +1,6 @@
 create table if not exists
 	countries (
-		id uuid primary key
+	  id uuid primary key
 	, name varchar(64)
 	, cca3 varchar(3)
 	, ccn3 integer unique not null

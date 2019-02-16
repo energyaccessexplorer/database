@@ -7,15 +7,15 @@ create table if not exists
 	, weight smallint default 2
 	, heatmap jsonb default '{
 	  "number_type": "16ui",
-		"scale": "linear",
+	  "scale": "linear",
 	  "domain": {
-			"min": 0,
-			"max": 250
-		},
+	    "min": 0,
+	    "max": 250
+	  },
 	  "init": {
-			"min": 0,
-			"max": 250
-		},
+	    "min": 0,
+	    "max": 250
+	  },
 	  "color_stops": [],
 	  "clamp": false,
 	  "precision": 0,
