@@ -25,14 +25,14 @@ default: list
 console:
 	@psql ${DB}
 
-dump:
+dump-data:
 	@pg_dump ${DB} \
 		--verbose \
 		--format=p \
-		--data-only \
-		--no-owner > dumps/${DUMP}
+		--no-owner \
+		--data-only > dumps/${DUMP}
 
-	@(cd dumps && ln -sf ${DUMP} latest)
+	@(cd dumps && ln -sf ${DUMP} latest-data)
 
 list:
 	@psql ${DB} \
@@ -47,15 +47,28 @@ drop:
 create:
 	@psql ${TEMPLATE1} -c "create database ${DBNAME}_dev;"
 
+build:
+	@for file in \
+		db \
+		countries \
+		categories \
+		datasets \
+		files \
+		grants \
+		; do \
+		psql ${DB_DEV} --file=sql/$$file.sql ; \
+	done
+
 restore:
 	@psql ${DB_DEV} \
 		-v ON_ERROR_STOP=on \
 		--command="SET session_replication_role = replica;" \
-		--file=./dumps/latest
-
-build:
-	@for file in db countries categories datasets files grants; do \
-		psql ${DB_DEV} --file=sql/$$file.sql ; \
-	done
+		--file=./dumps/latest-data
 
 rebuild: drop create build restore
+
+signin:
+	@psql ${DB} \
+		--pset="pager=off" \
+		--pset="tuples_only=on" \
+		--command="select 'localStorage.setItem(\"token\", \"' || sign(row_to_json(r), '${PGREST_SECRET}') || '\");' from (select 'rumadmin' as role, extract(epoch from now())::integer + 600*60 as exp) as r"
