@@ -71,4 +71,4 @@ signin:
 	@psql ${DB} \
 		--pset="pager=off" \
 		--pset="tuples_only=on" \
-		--command="select 'localStorage.setItem(\"token\", \"' || sign(row_to_json(r), '${PGREST_SECRET}') || '\");' from (select 'rumadmin' as role, extract(epoch from now())::integer + 600*60 as exp) as r"
+		--command="select 'localStorage.setItem(\"token\", \"' || sign(row_to_json(r), '${PGREST_SECRET}') || '\");' from (select 'ea_admin' as role, extract(epoch from now())::integer + 600*60 as exp) as r"
