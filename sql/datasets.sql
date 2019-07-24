@@ -3,9 +3,9 @@ create table if not exists
 	  id uuid primary key
 	, category_name varchar(32) not null
 	, category_id uuid references categories (id) not null
-	, country_id uuid references countries (id) not null
+	, geography_id uuid references geographies (id) not null
 	, online bool default false
-	, unique(category_id, country_id)
+	, unique(category_id, geography_id)
 	, presets jsonb
 	, metadata jsonb default '{
 	  "description": null,

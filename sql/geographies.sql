@@ -1,16 +1,17 @@
 create table if not exists
-	countries (
+	geographies (
 	  id uuid primary key
 	, name varchar(64)
-	, cca3 varchar(3)
-	, ccn3 integer unique not null
+	, adm int
+	, cca3 varchar(3) not null
+	, parent_id uuid references geographies (id)
 	, online bool default false
 	, bounds jsonb default '[[0,0], [0,0]]'
 	, category_tree jsonb default null
-	, metadata jsonb default '{}'
+	, configuration jsonb default '{}'
 	);
 
 create trigger insert_uuid
-	before insert on countries
+	before insert on geographies
 	for each row
 	execute procedure insert_uuid();
