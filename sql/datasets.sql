@@ -45,3 +45,10 @@ create trigger insert_category_name
 	for each row
 	execute procedure insert_category_name();
 
+create function geography_name(datasets)
+returns text as $$
+	select name
+		from geographies
+		where id = $1.geography_id;
+$$ language sql;
+
