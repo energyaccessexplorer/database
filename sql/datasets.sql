@@ -14,7 +14,7 @@ create table if not exists
 	  "spatial_resolution": null,
 	  "license": null,
 	  "sources": null,
-	  "content_date": 0,
+	  "content_date": null,
 	  "download_original_url": null,
 	  "learn_more_url": null
 	}'

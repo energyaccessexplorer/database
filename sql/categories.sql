@@ -5,32 +5,9 @@ create table if not exists
 	, name_long varchar(64) not null
 	, unit varchar(32)
 	, weight smallint default 2
-	, heatmap jsonb default '{
-	  "number_type": "16ui",
-	  "scale": "linear",
-	  "domain": {
-	    "min": 0,
-	    "max": 250
-	  },
-	  "init": {
-	    "min": 0,
-	    "max": 250
-	  },
-	  "color_stops": [],
-	  "clamp": false,
-	  "precision": 0,
-	  "factor": 1
-	}'
-	, vectors jsonb default '{
-	  "shape_type": null,
-	  "fill": null,
-	  "stroke": null,
-	  "width": 1,
-	  "opacity": 1,
-	  "dasharray": "1"
-	}'
-	, metadata jsonb
-	, configuration jsonb
+	, heatmap jsonb default 'null'
+	, vectors jsonb default 'null'
+	, metadata jsonb default '{"why": null, "path": [], "invert": []}'
 	);
 
 create trigger insert_uuid

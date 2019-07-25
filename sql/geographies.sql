@@ -6,8 +6,6 @@ create table if not exists
 	, cca3 varchar(3) not null
 	, parent_id uuid references geographies (id)
 	, online bool default false
-	, bounds jsonb default '[[0,0], [0,0]]'
-	, category_tree jsonb default null
 	, configuration jsonb default '{}'
 	);
 
