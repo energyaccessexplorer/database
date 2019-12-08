@@ -4,7 +4,7 @@ create table if not exists
 	, label varchar(32) not null default current_timestamp::text
 	, dataset_id uuid references datasets (id) not null
 	, test boolean default true
-	, endpoint uri not null
+	, endpoint text not null
 	, comment text not null
 	, created date
 	, created_by varchar(64)
