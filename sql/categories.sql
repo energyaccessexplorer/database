@@ -5,7 +5,7 @@ create table if not exists
 	, name_long varchar(64) not null
 	, unit varchar(32)
 	, weight smallint default 2
-	, heatmap jsonb default 'null'
+	, raster jsonb default 'null'
 	, vectors jsonb default 'null'
 	, metadata jsonb default '{"why": null, "path": [], "invert": []}'
 	);

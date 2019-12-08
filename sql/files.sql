@@ -68,6 +68,6 @@ create trigger files_before_delete
 	for each row
 	execute procedure files_before_delete();
 
-alter table datasets add column heatmap_file_id uuid references files (id);
+alter table datasets add column raster_file_id uuid references files (id);
 alter table datasets add column vectors_file_id uuid references files (id);
 alter table datasets add column csv_file_id uuid references files (id);

@@ -20,7 +20,7 @@ create table if not exists
 	}'
 	, configuration jsonb
 
-	-- , heatmap_file uuid references files (id)  -- added in files.sql
+	-- , raster_file uuid references files (id)   -- added in files.sql
 	-- , vectors_file uuid references files (id)  -- added in files.sql
 	-- , csv_file uuid references files (id)      -- added in files.sql
 	);
