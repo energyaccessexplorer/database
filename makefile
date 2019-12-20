@@ -1,74 +1,72 @@
-# PASSWD != pass username/example.org
-# TIME != date +'%Y-%m-%d--%T'
-#
-# PG_DEV = postgres://postgres@localhost
-# PG_PROD = postgres://username:${PASSWD}@example.org
-#
-# DBNAME = ea
-# DB_DEV = ${PG_DEV}/${DBNAME}_dev
-# DB_PROD = ${PG_PROD}/${DBNAME}
-#
-# DB = ${DB_DEV}
-#
-# DUMP = ${DBNAME}-${TIME}
-#
-# ifeq (${env},production)
-# DB = ${DB_PROD}
-# endif
-#
-# TEMPLATE1 = ${PG_DEV}/template1
-#
-include default.mk
+include ../default.mk
 
-default: list
+DB = ${PG}/${DB_NAME}
+
+TEMPLATE1 = ${PG}/template1
+
+TIME != date +'%Y-%m-%d--%T'
+DUMP = ${DB_NAME}-${TIME}-${env}.dump
+
+ifndef ${dump}
+dump = dumps/latest-data
+endif
+
+default: show
+
+show:
+	@echo "DUMP: ${dump} -> ${DUMP}"
+	@echo "DB: ${DB}"
 
 console:
 	@psql ${DB}
+
+dump-schema:
+	@pg_dump ${DB} \
+		--verbose \
+		--format=p \
+		--no-owner \
+		--schema-only > dumps/${DUMP}-schema
+
+	@(cd dumps && ln -sf ${DUMP}-schema latest-schema)
 
 dump-data:
 	@pg_dump ${DB} \
 		--verbose \
 		--format=p \
 		--no-owner \
-		--data-only > dumps/${DUMP}
+		--data-only > dumps/${DUMP}-data
 
-	@(cd dumps && ln -sf ${DUMP} latest-data)
+	@(cd dumps && ln -sf ${DUMP}-data latest-data)
 
 list:
 	@psql ${DB} \
 		--pset="pager=off" \
 		--command="\dt[+]"
 
-# ONLY TO BE USED IN _dev:
-
 drop:
-	@psql ${TEMPLATE1} -c "drop   database ${DBNAME}_dev;"
+	psql ${TEMPLATE1} -c "drop database ${DB_NAME};"
 
 create:
-	@psql ${TEMPLATE1} -c "create database ${DBNAME}_dev;"
+	psql ${TEMPLATE1} -c "create database ${DB_NAME};"
 
 build:
-	@for file in \
-		db \
-		countries \
-		categories \
-		datasets \
-		files \
-		grants \
-		; do \
-		psql ${DB_DEV} --file=sql/$$file.sql ; \
+	@echo ${DB}
+
+	@for file in ${SQL_FILES}; do \
+		psql ${DB} --file=sql/$$file.sql ; \
 	done
 
 restore:
-	@psql ${DB_DEV} \
+	@psql ${DB} \
 		-v ON_ERROR_STOP=on \
 		--command="SET session_replication_role = replica;" \
-		--file=./dumps/latest-data
+		--file=${dump}
+
+	@echo "Restored from dumpfile: ${dump}"
 
 rebuild: drop create build restore
 
-signin:
+snippet:
 	@psql ${DB} \
 		--pset="pager=off" \
-		--pset="tuples_only=on" \
-		--command="select 'localStorage.setItem(\"token\", \"' || sign(row_to_json(r), '${PGREST_SECRET}') || '\");' from (select 'ea_admin' as role, extract(epoch from now())::integer + 600*60 as exp) as r"
+		--file=./snippet.sql

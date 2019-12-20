@@ -1,6 +1,6 @@
 create table if not exists
 	files (
-	  id uuid primary key
+	  id uuid primary key default gen_random_uuid()
 	, label varchar(32) not null default current_timestamp::text
 	, dataset_id uuid references datasets (id) not null
 	, test boolean default true
@@ -47,11 +47,6 @@ language plpgsql immutable as $$ begin
 
 	return old;
 end $$;
-
-create trigger insert_uuid
-	before insert on files
-	for each row
-	execute procedure insert_uuid();
 
 create trigger files_before_create
 	before insert on files
