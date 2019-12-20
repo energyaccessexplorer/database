@@ -2,5 +2,13 @@ create extension unaccent;
 create extension pgcrypto;
 create extension pgjwt;     -- https://github.com/michelp/pgjwt
 
-create role ea_admin;
+create role root nologin;
+create role admin nologin;
+create role master nologin;
 create role guest nologin;
+
+grant select on all tables in schema public to admin;
+grant select on all tables in schema public to guest;
+
+grant admin to master;
+grant admin to root;
