@@ -46,3 +46,8 @@ returns bigint as $$
 	select count(1) from datasets where geography_id = $1.id;
 $$ language sql;
 
+create or replace view geography_boundaries as
+	select id, geography_id from datasets d where d.category_name = 'boundaries';
+
+grant select on geography_boundaries to public;
+
