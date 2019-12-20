@@ -3,6 +3,7 @@ create table if not exists
 	  id uuid primary key default gen_random_uuid()
 	, category_id uuid references categories (id) not null
 	, geography_id uuid references geographies (id) not null
+	, circle name default 'public'
 	, online bool default false
 	, unique(category_id, geography_id)
 	, presets jsonb
@@ -23,9 +24,21 @@ create table if not exists
 	-- , csv_file uuid references files (id)      -- added in files.sql
 	);
 
-alter table datasets enable row level security;
-create policy online_policy on datasets using (online or (current_user in ('ea_admin')));
+--
+-- ROW-LEVEL SECURITY
+--
 
+alter table datasets enable row level security;
+
+create policy public_online on datasets
+	for select to public
+	using (circle in ('public') and online);
+
+create policy circle_role on datasets
+	using (circle in (current_role));
+
+create policy superusers on datasets
+	using (current_role in ('master', 'root'));
 
 --
 -- FETCHING
