@@ -3,6 +3,7 @@ create table if not exists
 	  id uuid primary key default gen_random_uuid()
 	, category_id uuid references categories (id) not null
 	, geography_id uuid references geographies (id) not null
+	, pack epiphet default 'all'
 	, circle epiphet default 'public'
 	, online bool default false
 	, unique(category_id, geography_id)

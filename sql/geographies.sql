@@ -5,6 +5,7 @@ create table if not exists
 	, adm int
 	, cca3 varchar(3) not null
 	, circle epiphet default 'public'
+	, pack epiphet default 'all'
 	, parent_id uuid references geographies (id)
 	, online bool default false
 	, configuration jsonb default 'null'
