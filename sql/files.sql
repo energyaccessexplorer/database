@@ -12,6 +12,16 @@ create table if not exists
 	, updated_by varchar(64)
 	);
 
+create function category_name(files)
+returns epiphet as $$
+	select d.category_name from datasets d where d.id = $1.dataset_id;
+$$ language sql;
+
+create function geography_name(files)
+returns text as $$
+	select d.geography_name from datasets d where d.id = $1.dataset_id;
+$$ language sql;
+
 create function files_before_create()
 returns trigger
 language plpgsql immutable as $$ begin
