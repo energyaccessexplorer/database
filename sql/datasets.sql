@@ -3,7 +3,7 @@ create table if not exists
 	  id uuid primary key default gen_random_uuid()
 	, category_id uuid references categories (id) not null
 	, geography_id uuid references geographies (id) not null
-	, circle name default 'public'
+	, circle epiphet default 'public'
 	, online bool default false
 	, unique(category_id, geography_id)
 	, presets jsonb
@@ -45,7 +45,7 @@ create policy superusers on datasets
 --
 
 create function category_name(datasets)
-returns text as $$
+returns epiphet as $$
 	select name from categories where id = $1.category_id;
 $$ language sql;
 

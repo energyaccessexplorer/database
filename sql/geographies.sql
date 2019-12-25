@@ -4,7 +4,7 @@ create table if not exists
 	, name varchar(64)
 	, adm int
 	, cca3 varchar(3) not null
-	, circle name default 'public'
+	, circle epiphet default 'public'
 	, parent_id uuid references geographies (id)
 	, online bool default false
 	, configuration jsonb default 'null'
