@@ -7,19 +7,19 @@ create table if not exists
 	, circle epiphet default 'public'
 	, online bool default false
 	, unique(category_id, geography_id)
-	, presets jsonb
-	, metadata jsonb default '{
-	  "description": null,
-	  "suggested_citation": null,
-	  "cautions": null,
-	  "spatial_resolution": null,
-	  "license": null,
-	  "sources": null,
-	  "content_date": null,
-	  "download_original_url": null,
-	  "learn_more_url": null
-	}'
-	, configuration jsonb
+	, presets jsonb default 'null'
+	, configuration jsonb default 'null'
+	, metadata jsonb default jsonb_build_object(
+	  'description', null,
+	  'suggested_citation', null,
+	  'cautions', null,
+	  'spatial_resolution', null,
+	  'license', null,
+	  'sources', null,
+	  'content_date', null,
+	  'download_original_url', null,
+	  'learn_more_url', null
+	)
 	-- , raster_file uuid references files (id)   -- added in files.sql
 	-- , vectors_file uuid references files (id)  -- added in files.sql
 	-- , csv_file uuid references files (id)      -- added in files.sql
