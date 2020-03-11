@@ -7,9 +7,9 @@ TEMPLATE1 = ${PG}/template1
 TIME != date +'%Y-%m-%d--%T'
 DUMP = ${DB_NAME}-${TIME}-${env}.dump
 
-ifndef ${dump}
+.ifndef dump
 dump = dumps/latest-data
-endif
+.endif
 
 default: show
 
@@ -70,3 +70,5 @@ snippet:
 	@psql ${DB} \
 		--pset="pager=off" \
 		--file=./snippet.sql
+
+-include extras.mk
