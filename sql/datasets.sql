@@ -39,7 +39,7 @@ create policy public_online on datasets
 	using (circle in ('public') and online);
 
 create policy circle_role on datasets
-	using (circle in (current_role));
+	using (circle in (current_role, 'public'));
 
 create policy superusers on datasets
 	using (current_role in ('master', 'root'));
