@@ -2,9 +2,10 @@ create table datasets (
 	  id uuid primary key default gen_random_uuid()
 	, category_id uuid references categories (id) not null
 	, geography_id uuid references geographies (id) not null
-	, name epiphet unique default null
-	, name_long text unique default null
-	, unique(category_id, geography_id, name)
+	, name epiphet default null
+	, name_long text default null
+	, unique(geography_id, name)
+	, unique(geography_id, name_long)
 	, unit text
 	, pack epiphet default 'all'
 	, circle epiphet default 'public'
