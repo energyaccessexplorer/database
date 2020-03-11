@@ -1,26 +1,15 @@
 create table files (
 	  id uuid primary key default gen_random_uuid()
 	, label varchar(32) not null default current_timestamp::text
-	, dataset_id uuid references datasets (id) not null
 	, configuration jsonb default 'null'
 	, test boolean default true
-	, endpoint text not null
+	, endpoint text unique not null
 	, comment text not null
 	, created date
 	, created_by varchar(64)
 	, updated date
 	, updated_by varchar(64)
 	);
-
-create function category_name(files)
-returns epiphet as $$
-	select d.category_name from datasets d where d.id = $1.dataset_id;
-$$ language sql;
-
-create function geography_name(files)
-returns text as $$
-	select d.geography_name from datasets d where d.id = $1.dataset_id;
-$$ language sql;
 
 create function files_before_create()
 returns trigger
@@ -72,7 +61,3 @@ create trigger files_before_delete
 	before delete on files
 	for each row
 	execute procedure files_before_delete();
-
-alter table datasets add column raster_file_id uuid references files (id);
-alter table datasets add column vectors_file_id uuid references files (id);
-alter table datasets add column csv_file_id uuid references files (id);
