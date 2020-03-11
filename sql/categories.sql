@@ -1,5 +1,4 @@
-create table if not exists
-	categories (
+create table categories (
 	  id uuid primary key default gen_random_uuid()
 	, name epiphet unique not null
 	, name_long varchar(64) not null

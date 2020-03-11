@@ -1,5 +1,4 @@
-create table if not exists
-	geographies (
+create table geographies (
 	  id uuid primary key default gen_random_uuid()
 	, name varchar(64)
 	, adm int

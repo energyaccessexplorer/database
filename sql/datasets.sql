@@ -1,5 +1,4 @@
-create table if not exists
-	datasets (
+create table datasets (
 	  id uuid primary key default gen_random_uuid()
 	, category_id uuid references categories (id) not null
 	, geography_id uuid references geographies (id) not null
@@ -63,7 +62,7 @@ returns bigint as $$
 	select count(1) from datasets where geography_id = $1.id;
 $$ language sql;
 
-create or replace view geography_boundaries as
+create view geography_boundaries as
 	select id, geography_id from datasets d where d.category_name = 'boundaries';
 
 

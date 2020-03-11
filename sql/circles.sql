@@ -1,4 +1,4 @@
-create or replace function circles_create(name, name)
+create function circles_create(name, name)
 returns boolean as $$
 declare
 	is_member boolean;
