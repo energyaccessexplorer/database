@@ -11,6 +11,7 @@ create table datasets (
 	, online bool default false
 	, presets jsonb default 'null'
 	, configuration jsonb default 'null'
+	, category_overrides jsonb default 'null'
 	, metadata jsonb default jsonb_build_object(
 	  'description', null,
 	  'suggested_citation', null,

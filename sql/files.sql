@@ -2,6 +2,7 @@ create table files (
 	  id uuid primary key default gen_random_uuid()
 	, label varchar(32) not null default current_timestamp::text
 	, dataset_id uuid references datasets (id) not null
+	, configuration jsonb default 'null'
 	, test boolean default true
 	, endpoint text not null
 	, comment text not null
