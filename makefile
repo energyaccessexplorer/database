@@ -7,6 +7,8 @@ TEMPLATE1 = ${PG}/template1
 TIME != date +'%Y-%m-%d--%T'
 DUMP = ${DB_NAME}-${TIME}-${env}.dump
 
+SQL_FILES != cat sql-files.txt
+
 .ifndef dump
 dump = dumps/latest-data
 .endif
