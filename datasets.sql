@@ -33,6 +33,9 @@ create table datasets (
 	-- , csv_file uuid references files (id)      -- added in files.sql
 	);
 
+alter table datasets rename constraint datasets_geography_id_fkey to geography;
+alter table datasets rename constraint datasets_category_id_fkey to category;
+
 --
 -- ROW-LEVEL SECURITY
 --
@@ -69,7 +72,7 @@ returns bigint as $$
 $$ language sql;
 
 create view geography_boundaries as
-	select id, geography_id from datasets d where d.category_name = 'boundaries';
+	select id, geography_id from datasets d where d.category_name = 'boundaries' and online;
 
 create trigger datasets_before_create
 	before insert on datasets

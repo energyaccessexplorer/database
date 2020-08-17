@@ -11,32 +11,6 @@ create table files (
 	, updated_by varchar(64)
 	);
 
-create function files_before_create()
-returns trigger
-language plpgsql immutable as $$ begin
-	new.created = current_date;
-	new.created_by = current_user;
-
-	return new;
-end $$;
-
-create function files_before_update()
-returns trigger
-language plpgsql immutable as $$ begin
-	new.updated = current_date;
-	new.updated_by = current_user;
-
-	if (new.test and not old.test) then
-		raise exception '"test" attribute cannot be changed from "false" to "true"';
-	end if;
-
-	if (old.created_by != new.created_by) or (old.created != new.created) then
-		raise exception '"created" and "created_by" are not editable assets.';
-	end if;
-
-	return new;
-end $$;
-
 create function files_before_delete()
 returns trigger
 language plpgsql immutable as $$ begin
