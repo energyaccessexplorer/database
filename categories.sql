@@ -23,4 +23,18 @@ create table categories (
 	, metadata jsonb default jsonb_build_object(
 		'why', null
 		)
+	, created date default current_date
+	, created_by varchar(64)
+	, updated timestamp with time zone default current_timestamp
+	, updated_by varchar(64)
 	);
+
+create trigger categories_before_create
+	before insert on categories
+	for each row
+	execute procedure before_any_create();
+
+create trigger categories_before_update
+	before update on categories
+	for each row
+	execute procedure before_any_update();

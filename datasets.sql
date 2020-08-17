@@ -24,6 +24,10 @@ create table datasets (
 	  'download_original_url', null,
 	  'learn_more_url', null
 	)
+	, created date default current_date
+	, created_by varchar(64)
+	, updated timestamp with time zone default current_timestamp
+	, updated_by varchar(64)
 	-- , raster_file uuid references files (id)   -- added in files.sql
 	-- , vectors_file uuid references files (id)  -- added in files.sql
 	-- , csv_file uuid references files (id)      -- added in files.sql
@@ -67,4 +71,12 @@ $$ language sql;
 create view geography_boundaries as
 	select id, geography_id from datasets d where d.category_name = 'boundaries';
 
+create trigger datasets_before_create
+	before insert on datasets
+	for each row
+	execute procedure before_any_create();
 
+create trigger datasets_before_update
+	before update on datasets
+	for each row
+	execute procedure before_any_update();

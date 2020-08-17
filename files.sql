@@ -5,9 +5,9 @@ create table files (
 	, test boolean default true
 	, endpoint text unique not null
 	, comment text not null
-	, created date
+	, created date default current_date
 	, created_by varchar(64)
-	, updated date
+	, updated timestamp with time zone default current_timestamp
 	, updated_by varchar(64)
 	);
 
@@ -47,15 +47,15 @@ language plpgsql immutable as $$ begin
 	return old;
 end $$;
 
-create trigger files_before_create
+create trigger before_any_create
 	before insert on files
 	for each row
-	execute procedure files_before_create();
+	execute procedure before_any_create();
 
-create trigger files_before_update
+create trigger before_any_update
 	before update on files
 	for each row
-	execute procedure files_before_update();
+	execute procedure before_any_update();
 
 create trigger files_before_delete
 	before delete on files
