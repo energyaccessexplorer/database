@@ -1,14 +1,14 @@
 create function circles_create(rol name, parent name)
 returns boolean as $$
 declare
-	is_member boolean;
+	usr boolean;
 begin
-	select 'member' in
+	select 'usr' in
 		(select a.rolname from pg_authid a where pg_has_role(parent, a.oid, 'member'))
-	into is_member;
+	into usr;
 
-	if not is_member then
-		raise exception 'NO NO NO!!';
+	if not usr then
+		raise exception 'Only usrs allowed!! (%,%)', rol, parent;
 	end if;
 
 	execute format('
@@ -21,7 +21,7 @@ end $$ language plpgsql;
 
 create function circles_create(rolname name)
 returns boolean as $$ begin
-	return circles_create(rolname, 'member');
+	return circles_create(rolname, 'usr');
 end $$ language plpgsql;
 
 create function circles_drop(rolname name)

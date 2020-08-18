@@ -3,7 +3,7 @@ create extension pgcrypto;
 create extension pgjwt;     -- https://github.com/michelp/pgjwt
 
 create role guest nologin;
-create role member nologin;
+create role usr nologin;
 create role root nologin;
 create role master nologin;
 create role admin nologin;
