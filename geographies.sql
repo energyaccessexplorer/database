@@ -20,6 +20,9 @@ create policy public_online on geographies
 	for select to public
 	using (circle in ('public') and online);
 
+create policy admins on geographies
+	using (current_role in ('admin') and online);
+
 create policy superusers on geographies
 	using (current_role in ('master', 'root'));
 
