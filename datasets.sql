@@ -14,23 +14,20 @@ create table datasets (
 	, configuration jsonb default 'null'
 	, category_overrides jsonb default 'null'
 	, metadata jsonb default jsonb_build_object(
-	  'description', null,
-	  'suggested_citation', null,
-	  'cautions', null,
-	  'spatial_resolution', null,
-	  'license', null,
-	  'sources', null,
-	  'content_date', null,
-	  'download_original_url', null,
-	  'learn_more_url', null
-	)
+		'description', null,
+		'suggested_citation', null,
+		'cautions', null,
+		'spatial_resolution', null,
+		'license', null,
+		'sources', null,
+		'content_date', null,
+		'download_original_url', null,
+		'learn_more_url', null
+		)
 	, created date default current_date
 	, created_by varchar(64)
 	, updated timestamp with time zone default current_timestamp
 	, updated_by varchar(64)
-	-- , raster_file uuid references files (id)   -- added in files.sql
-	-- , vectors_file uuid references files (id)  -- added in files.sql
-	-- , csv_file uuid references files (id)      -- added in files.sql
 	);
 
 alter table datasets rename constraint datasets_geography_id_fkey to geography;

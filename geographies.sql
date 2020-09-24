@@ -7,7 +7,15 @@ create table geographies (
 	, pack epiphet default 'all'
 	, parent_id uuid references geographies (id)
 	, online bool default false
-	, configuration jsonb default 'null'
+	, configuration jsonb default jsonb_build_object(
+		'boundaries_name', null,
+		'timeline', false,
+		'timeline_dates', null,
+		'flag', null,
+		'sort_branches', array[]::text[],
+		'sort_subbranches', array[]::text[],
+		'sort_datasets', array[]::text[]
+		)
 	, created date default current_date
 	, created_by varchar(64)
 	, updated timestamp with time zone default current_timestamp

@@ -1,6 +1,6 @@
 db
-geographies
 categories
+geographies
 datasets
 files
 _datasets_files

@@ -16,10 +16,6 @@ create table categories (
 		'path', array[]::text[],
 		'weight', false
 		)
-	, configuration jsonb default jsonb_build_object(
-		'path', array[]::text[],
-		'invert', array[]::text[]
-		)
 	, metadata jsonb default jsonb_build_object(
 		'why', null
 		)
