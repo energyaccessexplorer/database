@@ -9,7 +9,9 @@ begin
 		union all
 		select m.roleid from r
 			join pg_auth_members m on m.member = r.oid)
-	select array_agg(oid::regrole::text) from r into arr;
+	select array_agg(oid::regrole::text) from r
+		where oid::regrole::text != rol
+	into arr;
 
 	return arr;
 end $$ language plpgsql;
