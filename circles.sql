@@ -58,6 +58,12 @@ returns boolean as $$ begin
 	return true;
 end $$ language plpgsql;
 
+create or replace function circles_update(oldname name, newname name)
+returns table(rolname name) as $$ begin
+	execute format('alter role %1$s rename to %2$s;', oldname, newname);
+	return query select pg_roles.rolname from pg_roles where pg_roles.rolname = newname;
+end $$ language plpgsql;
+
 create function circles_insert()
 returns trigger
 as $$ begin
