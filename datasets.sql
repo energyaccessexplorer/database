@@ -46,7 +46,7 @@ create policy public_online on datasets
 create policy circle_role on datasets
 	using (circle in (current_role, 'public'));
 
-create policy admins on geographies
+create policy admins on datasets
 	using (current_role in ('admin'));
 
 create policy superusers on datasets
