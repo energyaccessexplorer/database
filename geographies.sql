@@ -22,6 +22,8 @@ create table geographies (
 	, updated_by varchar(64)
 	);
 
+alter table geographies rename constraint geographies_parent_id_fkey to parent;
+
 alter table geographies enable row level security;
 
 create policy public_online on geographies
