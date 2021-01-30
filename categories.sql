@@ -3,6 +3,8 @@ create table categories (
 	, name epiphet unique not null
 	, name_long varchar(64) not null
 	, unit varchar(32)
+	, domain jsonb default 'null'
+	, domain_init jsonb default 'null'
 	, colorstops jsonb default 'null'
 	, raster jsonb default 'null'
 	, vectors jsonb default 'null'
