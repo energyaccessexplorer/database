@@ -1,8 +1,8 @@
 db
 categories
+files
 geographies
 datasets
-files
 _datasets_files
 circles
 tablegrants

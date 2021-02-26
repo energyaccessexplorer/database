@@ -48,9 +48,9 @@ begin
 end $$ language plpgsql;
 
 create function circles_create(rolname name)
-returns boolean as $$ begin
-	return circles_create(rolname, 'usr');
-end $$ language plpgsql;
+returns boolean as $$
+	select circles_create(rolname, 'usr');
+$$ language sql;
 
 create function circles_drop(rolname name)
 returns boolean as $$ begin
