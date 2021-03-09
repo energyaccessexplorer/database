@@ -9,7 +9,6 @@ create table datasets (
 	, unit text
 	, pack epiphet default 'all'
 	, circle epiphet default 'public'
-	, online bool default false
 	, presets jsonb default 'null'
 	, configuration jsonb default 'null'
 	, category_overrides jsonb default 'null'
@@ -39,9 +38,9 @@ alter table datasets rename constraint datasets_category_id_fkey to category;
 
 alter table datasets enable row level security;
 
-create policy public_online on datasets
+create policy public on datasets
 	for select to public
-	using (circle in ('public') and online);
+	using (circle in ('public'));
 
 create policy circle_role on datasets
 	using (circle in (current_role, 'public'));
@@ -72,7 +71,7 @@ returns bigint as $$
 $$ language sql;
 
 create view geography_boundaries as
-	select id, geography_id from datasets d where d.category_name = 'boundaries' and online;
+	select id, geography_id from datasets d where d.category_name = 'boundaries';
 
 create trigger datasets_before_create
 	before insert on datasets

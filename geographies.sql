@@ -6,7 +6,6 @@ create table geographies (
 	, circle epiphet default 'public'
 	, pack epiphet default 'all'
 	, parent_id uuid references geographies (id)
-	, online bool default false
 	, configuration jsonb default jsonb_build_object(
 		'boundaries_name', null,
 		'timeline', false,
@@ -26,12 +25,12 @@ alter table geographies rename constraint geographies_parent_id_fkey to parent;
 
 alter table geographies enable row level security;
 
-create policy public_online on geographies
+create policy public on geographies
 	for select to public
-	using (circle in ('public') and online);
+	using (circle in ('public'));
 
 create policy admins on geographies
-	using (current_role in ('admin') and online);
+	using (current_role in ('admin'));
 
 create policy superusers on geographies
 	using (current_role in ('master', 'root'));
