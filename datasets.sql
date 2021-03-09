@@ -9,6 +9,7 @@ create table datasets (
 	, unit text
 	, pack epiphet default 'all'
 	, circle epiphet default 'public'
+	, envs environments[] default array[]::environments[]
 	, presets jsonb default 'null'
 	, configuration jsonb default 'null'
 	, category_overrides jsonb default 'null'
