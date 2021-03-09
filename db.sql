@@ -3,7 +3,6 @@ create extension pgcrypto;
 create extension pgjwt;     -- https://github.com/michelp/pgjwt
 
 -- create role guest nologin;
--- create role usr nologin;
 -- create role root nologin;
 -- create role master nologin;
 -- create role admin nologin;
@@ -38,3 +37,8 @@ language plpgsql immutable as $$ begin
 
 	return new;
 end $$;
+
+create function admin_circle(epiphet)
+returns boolean as $$
+	select ((current_role in ('admin')) and current_setting('request.jwt.claim.data', true)::jsonb->'circles' ? $1);
+$$ language sql immutable;

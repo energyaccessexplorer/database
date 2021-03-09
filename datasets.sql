@@ -8,7 +8,7 @@ create table datasets (
 	, unique(geography_id, name_long)
 	, unit text
 	, pack epiphet default 'all'
-	, circle epiphet default 'public'
+	, geography_circle epiphet generated always as (geography_circle(geography_id)) stored
 	, envs environments[] default array[]::environments[]
 	, presets jsonb default 'null'
 	, configuration jsonb default 'null'
@@ -32,25 +32,6 @@ create table datasets (
 
 alter table datasets rename constraint datasets_geography_id_fkey to geography;
 alter table datasets rename constraint datasets_category_id_fkey to category;
-
---
--- ROW-LEVEL SECURITY
---
-
-alter table datasets enable row level security;
-
-create policy public on datasets
-	for select to public
-	using (circle in ('public'));
-
-create policy circle_role on datasets
-	using (circle in (current_role, 'public'));
-
-create policy admins on datasets
-	using (current_role in ('admin'));
-
-create policy superusers on datasets
-	using (current_role in ('master', 'root'));
 
 --
 -- FETCHING

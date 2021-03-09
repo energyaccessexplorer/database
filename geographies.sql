@@ -24,19 +24,12 @@ create table geographies (
 	);
 
 alter table geographies rename constraint geographies_parent_id_fkey to parent;
-
-alter table geographies enable row level security;
-
-create policy public on geographies
-	for select to public
-	using (circle in ('public'));
-
-create policy admins on geographies
-	using (current_role in ('admin'));
-
-create policy superusers on geographies
-	using (current_role in ('master', 'root'));
 alter table geographies rename constraint geographies_boundary_file_fkey to boundary;
+
+create function geography_circle(uuid)
+returns epiphet as $$
+	select circle from geographies where id = $1;
+$$ language sql immutable;
 
 create trigger geographies_before_create
 	before insert on geographies
