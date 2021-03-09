@@ -6,6 +6,7 @@ create table geographies (
 	, circle epiphet default 'public'
 	, pack epiphet default 'all'
 	, parent_id uuid references geographies (id)
+	, boundary_file uuid references files (id)
 	, configuration jsonb default jsonb_build_object(
 		'boundaries_name', null,
 		'timeline', false,
@@ -35,6 +36,7 @@ create policy admins on geographies
 
 create policy superusers on geographies
 	using (current_role in ('master', 'root'));
+alter table geographies rename constraint geographies_boundary_file_fkey to boundary;
 
 create trigger geographies_before_create
 	before insert on geographies
