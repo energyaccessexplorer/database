@@ -6,7 +6,6 @@ create table geographies (
 	, circle epiphet default 'public'
 	, pack epiphet default 'all'
 	, parent_id uuid references geographies (id)
-	, boundary_file uuid references files (id)
 	, configuration jsonb default jsonb_build_object(
 		'boundaries_name', null,
 		'timeline', false,
@@ -24,11 +23,10 @@ create table geographies (
 	);
 
 alter table geographies rename constraint geographies_parent_id_fkey to parent;
-alter table geographies rename constraint geographies_boundary_file_fkey to boundary;
 
 create function geography_circle(uuid)
 returns epiphet as $$
-	select circle from geographies where id = $1;
+	select circle from public.geographies where id = $1;
 $$ language sql immutable;
 
 create trigger geographies_before_create
