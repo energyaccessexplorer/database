@@ -10,6 +10,7 @@ create table datasets (
 	, pack epiphet default 'all'
 	, geography_circle epiphet generated always as (geography_circle(geography_id)) stored
 	, envs environments[] default array[]::environments[]
+	, flagged boolean default false
 	, presets jsonb default 'null'
 	, configuration jsonb default 'null'
 	, category_overrides jsonb default 'null'
@@ -32,6 +33,11 @@ create table datasets (
 
 alter table datasets rename constraint datasets_geography_id_fkey to geography;
 alter table datasets rename constraint datasets_category_id_fkey to category;
+
+create trigger datasets_flagged
+	before update on datasets
+	for each row
+	execute procedure flagged();
 
 --
 -- FETCHING

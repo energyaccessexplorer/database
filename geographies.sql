@@ -16,6 +16,7 @@ create table geographies (
 		'sort_datasets', array[]::text[]
 		)
 	, envs environments[] default array[]::environments[]
+	, flagged boolean default false
 	, created date default current_date
 	, created_by varchar(64)
 	, updated timestamp with time zone default current_timestamp
@@ -28,6 +29,11 @@ create function geography_circle(uuid)
 returns epiphet as $$
 	select circle from public.geographies where id = $1;
 $$ language sql immutable;
+
+create trigger geographies_flagged
+	before update on geographies
+	for each row
+	execute procedure flagged();
 
 create trigger geographies_before_create
 	before insert on geographies

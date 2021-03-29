@@ -12,6 +12,17 @@ create domain epiphet as name check (value ~ '^[a-z][a-z0-9\-]+$');
 create type environments as enum ('test', 'staging', 'production');
 -- select enum_range(null::environments);
 
+create function flagged()
+returns trigger
+language plpgsql immutable as $$ begin
+	if (new.flagged) then
+		new.envs = array_remove(new.envs, 'production');
+		raise notice 'Flagged row. Removed "production" from envs.';
+	end if;
+
+	return new;
+end $$;
+
 create function before_any_create()
 returns trigger
 language plpgsql immutable as $$ begin
