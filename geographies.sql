@@ -15,7 +15,7 @@ create table geographies (
 		'sort_subbranches', array[]::text[],
 		'sort_datasets', array[]::text[]
 		)
-	, envs environments[] default array[]::environments[]
+	, deployment environments[] default array[]::environments[]
 	, flagged boolean default false
 	, created date default current_date
 	, created_by varchar(64)

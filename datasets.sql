@@ -9,7 +9,7 @@ create table datasets (
 	, unit text
 	, pack epiphet default 'all'
 	, geography_circle epiphet generated always as (geography_circle(geography_id)) stored
-	, envs environments[] default array[]::environments[]
+	, deployment environments[] default array[]::environments[]
 	, flagged boolean default false
 	, presets jsonb default 'null'
 	, configuration jsonb default 'null'

@@ -15,9 +15,9 @@ create type environments as enum ('test', 'staging', 'production');
 create function flagged()
 returns trigger
 language plpgsql immutable as $$ begin
-	if (new.flagged and array_position(new.envs, 'production') > -1) then
-		new.envs = array_remove(new.envs, 'production');
-		raise notice 'Flagged row. Removed "production" from envs.';
+	if (new.flagged and array_position(new.deployment, 'production') > -1) then
+		new.deployment = array_remove(new.deployment, 'production');
+		raise notice 'Flagged row. Removed "production" from deployment.';
 	end if;
 
 	return new;
