@@ -6,3 +6,6 @@ datasets
 _datasets_files
 files-sprawl
 tablegrants
+categories_rls
+geographies_rls
+datasets_rls

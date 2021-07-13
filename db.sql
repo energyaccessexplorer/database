@@ -6,6 +6,7 @@ create extension pgjwt;     -- https://github.com/michelp/pgjwt
 -- create role root nologin;
 -- create role master nologin;
 -- create role admin nologin;
+-- create role adminguest nologin;
 
 create domain epiphet as name check (value ~ '^[a-z][a-z0-9\-]+$');
 
@@ -52,4 +53,9 @@ end $$;
 create function admin_circle(epiphet)
 returns boolean as $$
 	select ((current_role in ('admin')) and current_setting('request.jwt.claim.data', true)::jsonb->'circles' ? $1);
+$$ language sql immutable;
+
+create function guest_circle(epiphet)
+returns boolean as $$
+	select ((current_role in ('guest')) and current_setting('request.jwt.claim.data', true)::jsonb->'circles' ? $1);
 $$ language sql immutable;
