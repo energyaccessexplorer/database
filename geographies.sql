@@ -7,11 +7,11 @@ create table geographies (
 	, envelope float[4] default array[]::float[4]
 	, check (
 		envelope[1] >= -180 and
-		envelope[2] <=  180 and
-		envelope[1] < envelope[2] and
-		envelope[3] >=  -90 and
+		envelope[3] <=  180 and
+		envelope[1] < envelope[3] and
+		envelope[2] >=  -90 and
 		envelope[4] <=   90 and
-		envelope[3] < envelope[4]
+		envelope[2] < envelope[4]
 	)
 	, pack epiphet default 'all'
 	, parent_id uuid references geographies (id)
