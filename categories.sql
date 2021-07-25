@@ -11,6 +11,7 @@ create table categories (
 	, csv jsonb default 'null'
 	, analysis jsonb default 'null'
 	, timeline jsonb default 'null'
+	, mutant boolean default false
 	, controls jsonb default jsonb_build_object(
 		'range', null,
 		'range_steps', null,
@@ -24,6 +25,40 @@ create table categories (
 	, updated timestamp with time zone default current_timestamp
 	, updated_by varchar(64)
 	);
+
+create function datatype(c categories)
+returns epiphet as $$
+declare
+	x epiphet;
+	y epiphet;
+begin
+	if (c.name in ('outline', 'boundaries')) then
+		return 'polygons-boundaries';
+	end if;
+
+	select (case
+	when (c.vectors <> 'null') then
+		c.vectors->>'shape_type'
+	when (c.raster <> 'null') then
+		'raster'
+	when (c.mutant) then
+		'mutant'
+	else
+		null
+	end) into x;
+
+	select (case
+	when (c.timeline <> 'null') then
+		'timeline'
+	when (c.csv <> 'null') then
+		'fixed'
+	else
+		null
+	end) into y;
+
+	return x || coalesce('-' || y, '');
+end
+$$ language plpgsql immutable;
 
 create trigger categories_before_create
 	before insert on categories
