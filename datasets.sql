@@ -14,6 +14,8 @@ create table datasets (
 	, presets jsonb default 'null'
 	, configuration jsonb default 'null'
 	, category_overrides jsonb default 'null'
+	, source_files jsonb default '[]'
+	, processed_files jsonb default '[]'
 	, metadata jsonb default jsonb_build_object(
 		'description', null,
 		'suggested_citation', null,
