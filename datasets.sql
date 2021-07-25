@@ -43,6 +43,62 @@ create trigger datasets_flagged
 -- FETCHING
 --
 
+create function datatype(datasets)
+returns epiphet as $$
+declare
+	category categories;
+
+	vectors jsonb;
+	raster jsonb;
+	csv jsonb;
+
+	mutant_targets jsonb;
+
+	x epiphet;
+	y epiphet;
+begin
+	select * from categories c where id = $1.category_id into category;
+
+	if (category.name in ('outline', 'boundaries')) then
+		return 'polygons-boundaries';
+	end if;
+
+	select ($1.configuration->>'mutant_targets') into mutant_targets;
+
+	select category.vectors into vectors;
+	select category.raster into raster;
+	select category.csv into csv;
+
+	select (case
+	when (vectors <> 'null') then
+		vectors->>'shape_type'
+	when (raster <> 'null') then
+		'raster'
+	when (csv <> 'null') then
+		'table'
+	when (mutant_targets is not null) then
+		(select d.datatype from datasets d
+			where d.category_name = mutant_targets->>0
+			and d.geography_id = $1.geography_id)
+	else
+		null
+	end) into x;
+
+	select (case
+	when (mutant_targets is not null) then
+		'mutant'
+	when ($1.configuration->>'csv_columns' is not null) then
+		'fixed'
+	when (category.timeline <> 'null') then
+		'timeline'
+	else
+		null
+	end) into y;
+
+	return x || coalesce('-' || y, '');
+end
+$$ language plpgsql immutable;
+
 create function category_name(datasets)
 returns epiphet as $$
 	select name from categories where id = $1.category_id;
