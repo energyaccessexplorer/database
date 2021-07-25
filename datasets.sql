@@ -80,6 +80,11 @@ returns bigint as $$
 	select count(1) from datasets where geography_id = $1.id;
 $$ language sql;
 
+create function datasets_count(categories)
+returns bigint as $$
+	select count(1) from datasets where category_id = $1.id;
+$$ language sql;
+
 create trigger datasets_before_create
 	before insert on datasets
 	for each row
