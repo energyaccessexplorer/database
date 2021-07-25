@@ -18,9 +18,7 @@ create table categories (
 		'path', array[]::text[],
 		'weight', false
 		)
-	, metadata jsonb default jsonb_build_object(
-		'why', null
-		)
+	, description text
 	, created date default current_date
 	, created_by varchar(64)
 	, updated timestamp with time zone default current_timestamp
