@@ -41,6 +41,8 @@ begin
 		c.vectors->>'shape_type'
 	when (c.raster <> 'null') then
 		'raster'
+	when (c.csv <> 'null') then
+		'table'
 	when (c.mutant) then
 		'mutant'
 	else
@@ -50,7 +52,7 @@ begin
 	select (case
 	when (c.timeline <> 'null') then
 		'timeline'
-	when (c.csv <> 'null') then
+	when (x <> 'table' and c.csv <> 'null') then
 		'fixed'
 	else
 		null
