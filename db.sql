@@ -5,6 +5,7 @@ create extension pgjwt;     -- https://github.com/michelp/pgjwt
 -- create role guest nologin;
 -- create role root nologin;
 -- create role master nologin;
+-- create role leader nologin;
 -- create role admin nologin;
 -- create role adminguest nologin;
 
