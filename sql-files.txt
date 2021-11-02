@@ -1,10 +1,7 @@
 db
 categories
-files
 geographies
 datasets
-_datasets_files
-files-sprawl
 tablegrants
 categories_rls
 geographies_rls
