@@ -5,9 +5,9 @@ create policy guest_select on datasets
 	to public
 	using (true);
 
-create policy admin_all on datasets
+create policy circles on datasets
 	to admin
-	using (admin_circle(geography_circle));
+	using (circle_roles_check(geography_circle, 'admin', 'leader'));
 
 create policy superusers on datasets
 	using (current_role in ('master', 'root'));

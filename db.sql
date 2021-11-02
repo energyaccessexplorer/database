@@ -50,12 +50,8 @@ language plpgsql immutable as $$ begin
 	return new;
 end $$;
 
-create function admin_circle(epiphet)
+create function circle_roles_check(circlename epiphet, variadic rolenames name[])
 returns boolean as $$
-	select ((current_role in ('admin')) and current_setting('request.jwt.claim.data', true)::jsonb->'circles' ? $1);
-$$ language sql immutable;
-
-create function guest_circle(epiphet)
-returns boolean as $$
-	select ((current_role in ('guest')) and current_setting('request.jwt.claim.data', true)::jsonb->'circles' ? $1);
+	select ((current_role in (select unnest(rolenames))) and
+		current_setting('request.jwt.claim.data', true)::jsonb->'circles' ? circlename);
 $$ language sql immutable;

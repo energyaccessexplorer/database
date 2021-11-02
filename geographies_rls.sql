@@ -10,9 +10,9 @@ create policy adminguest_select on geographies
 	to adminguest
 	using ('production' = any(deployment));
 
-create policy admin_all on geographies
+create policy circles on geographies
 	to admin
-	using (admin_circle(circle));
+	using (circle_roles_check(circle, 'admin', 'leader'));
 
 create policy superusers on geographies
 	using (current_role in ('master', 'root'));
