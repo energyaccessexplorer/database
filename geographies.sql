@@ -2,7 +2,6 @@ create table geographies (
 	  id uuid primary key default gen_random_uuid()
 	, name varchar(64)
 	, adm int
-	, cca3 varchar(3) not null
 	, circle epiphet default 'public'
 	, envelope float[4] default array[]::float[4]
 	, check (
