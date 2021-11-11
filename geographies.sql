@@ -39,6 +39,11 @@ returns epiphet as $$
 	select circle from public.geographies where id = $1;
 $$ language sql immutable;
 
+create function has_subgeographies(geographies)
+returns boolean as $$
+	select coalesce((select true from geographies where parent_id = $1.id limit 1), false);
+$$ language sql immutable;
+
 create trigger geographies_flagged
 	before update on geographies
 	for each row
