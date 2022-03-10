@@ -6,12 +6,9 @@ create table datasets (
 	, name_long text default null
 	, unique(geography_id, name)
 	, unique(geography_id, name_long)
-	, unit text
-	, pack epiphet default 'all'
 	, geography_circle epiphet generated always as (geography_circle(geography_id)) stored
 	, deployment environments[] default array[]::environments[]
 	, flagged boolean default false
-	, presets jsonb default 'null'
 	, configuration jsonb default 'null'
 	, category_overrides jsonb default 'null'
 	, source_files jsonb default '[]'

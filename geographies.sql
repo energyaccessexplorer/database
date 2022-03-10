@@ -13,7 +13,6 @@ create table geographies (
 		envelope[2] < envelope[4]
 	)
 	, resolution int default 1000
-	, pack epiphet default 'all'
 	, parent_id uuid references geographies (id)
 	, configuration jsonb default jsonb_build_object(
 		'boundaries_name', null,
