@@ -1,6 +1,6 @@
 alter table geographies enable row level security;
 
-create policy guest_select on geographies
+create policy public_select on geographies
 	for select
 	to public
 	using (not flagged);

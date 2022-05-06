@@ -1,6 +1,6 @@
 alter table datasets enable row level security;
 
-create policy guest_select on datasets
+create policy public_select on datasets
 	for select
 	to public
 	using (not flagged);
