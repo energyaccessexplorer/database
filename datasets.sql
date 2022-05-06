@@ -1,7 +1,7 @@
 create table datasets (
 	  id uuid primary key default gen_random_uuid()
-	, category_id uuid references categories (id) not null
-	, geography_id uuid references geographies (id) not null
+	, category_id uuid references categories (id) on delete cascade not null
+	, geography_id uuid references geographies (id) on delete cascade not null
 	, name epiphet default null
 	, name_long text default null
 	, unique(geography_id, name)
