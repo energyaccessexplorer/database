@@ -3,7 +3,7 @@ alter table datasets enable row level security;
 create policy guest_select on datasets
 	for select
 	to public
-	using (true);
+	using (not flagged);
 
 create policy circles on datasets
 	to admin
