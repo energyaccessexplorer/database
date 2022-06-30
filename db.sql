@@ -11,7 +11,7 @@ create extension pgjwt;     -- https://github.com/michelp/pgjwt
 
 create domain epiphet as name check (value ~ '^[a-z][a-z0-9\-]+$');
 
-create type environments as enum ('test', 'staging', 'production');
+create type environments as enum ('test', 'staging', 'production', 'training', 'dev');
 -- select enum_range(null::environments);
 
 create function flagged()
