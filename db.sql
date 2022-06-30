@@ -34,7 +34,7 @@ language plpgsql immutable as $$ begin
 	return new;
 end $$;
 
-create or replace function before_any_update()
+create function before_any_update()
 returns trigger
 language plpgsql immutable as $$ begin
 	if (old.updated_by != new.updated_by) or
@@ -57,7 +57,7 @@ returns boolean as $$
 		current_setting('request.jwt.claims', true)::jsonb->'data'->'circles' ? circlename);
 $$ language sql immutable;
 
-create or replace function envs_check(envs environments[])
+create function envs_check(envs environments[])
 returns boolean as $$ begin
 	return (current_setting('request.jwt.claims', true)::jsonb->'data'->'envs' ?| envs::text[]);
 end $$ language plpgsql immutable;
