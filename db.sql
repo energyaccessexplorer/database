@@ -29,7 +29,7 @@ create function before_any_create()
 returns trigger
 language plpgsql immutable as $$ begin
 	new.created = current_timestamp;
-	new.created_by = regexp_replace(current_setting('request.jwt.claim.email', true), '(.*)@.*', '\1');
+	new.created_by = regexp_replace(current_setting('request.jwt.claims', true)::jsonb->>'email', '(.*)@.*', '\1');
 
 	return new;
 end $$;
@@ -46,7 +46,7 @@ language plpgsql immutable as $$ begin
 	end if;
 
 	new.updated = current_timestamp;
-	new.updated_by = regexp_replace(current_setting('request.jwt.claim.email', true), '(.*)@.*', '\1');
+	new.updated_by = regexp_replace(current_setting('request.jwt.claims', true)::jsonb->>'email', '(.*)@.*', '\1');
 
 	return new;
 end $$;
@@ -54,7 +54,7 @@ end $$;
 create function circle_roles_check(circlename epiphet, variadic rolenames name[])
 returns boolean as $$
 	select ((current_role in (select unnest(rolenames))) and
-		current_setting('request.jwt.claim.data', true)::jsonb->'circles' ? circlename);
+		current_setting('request.jwt.claims', true)::jsonb->'data'->'circles' ? circlename);
 $$ language sql immutable;
 
 create or replace function envs_check(envs environments[])
