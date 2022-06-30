@@ -56,3 +56,8 @@ returns boolean as $$
 	select ((current_role in (select unnest(rolenames))) and
 		current_setting('request.jwt.claim.data', true)::jsonb->'circles' ? circlename);
 $$ language sql immutable;
+
+create or replace function envs_check(envs environments[])
+returns boolean as $$ begin
+	return (current_setting('request.jwt.claims', true)::jsonb->'data'->'envs' ?| envs::text[]);
+end $$ language plpgsql immutable;
