@@ -43,6 +43,41 @@ returns boolean as $$
 	select coalesce((select true from geographies where parent_id = $1.id limit 1), false);
 $$ language sql immutable;
 
+create function parent_sort_branches(geographies)
+returns jsonb as $$
+	select obj from parent_configuration('sort_branches') t where t.id = $1.id;
+$$ language sql immutable;
+
+create function parent_sort_subbranches(geographies)
+returns jsonb as $$
+	select obj from parent_configuration('sort_subbranches') t where t.id = $1.id;
+$$ language sql immutable;
+
+create function parent_sort_datasets(geographies)
+returns jsonb as $$
+	select obj from parent_configuration('sort_datasets') t where t.id = $1.id;
+$$ language sql immutable;
+
+create function parent_configuration(varchar)
+returns table(id uuid, obj jsonb) as $$
+	with recursive r as (
+		select
+			g.id,
+			g.parent_id,
+			nullif(g.configuration->$1, 'null') as obj
+		from geographies g
+
+	union
+		select
+			g.id,
+			g.parent_id,
+			coalesce(nullif(g.configuration->$1, 'null'), r.obj)
+		from geographies g
+		inner join r on r.id = g.parent_id
+
+	) select id, obj from r where obj is not null;
+$$ language sql;
+
 create trigger geographies_flagged
 	before update on geographies
 	for each row
