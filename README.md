@@ -2,19 +2,25 @@
 
 This is the SQL (PostgreSQL) code for the platform's database.
 
-Naturally, PostgreSQL must be installed and running. You can find some minor
-development utilities in the `makefile`. Create a `default.mk` file and create
-values to your needs:
+Naturally, PostgreSQL must be installed and running before starting.
 
-```
-DB_NAME = <database-name>
-PG = postgres://<user>:<passwd>@<server>:5432
-SQL_FILES = db geographies categories datasets files ...
-```
+## Dependencies
 
-Then, you can run `make build`.
+The following must also be installed on the system:
 
-It is written with having in mind that a PostgREST instance will run in front
-it. Hence, the external dependencies/extensions must be pre-installed on the
-system:
-- [pgjwt](https://github.com/michelp/pgjwt)
+- PostgreSQL (+PostgREST) handle authentication and permissions via JWT
+using [pgjwt](https://github.com/michelp/pgjwt)
+
+- UUID's and other checksums are generated via
+[pgcrypto](https://www.postgresql.org/docs/current/pgcrypto.html). Which is
+generally installed with any PostgreSQL server
+
+## Configuration
+
+You should configure the first lines of the `makefile` to your needs.
+
+## Building the database
+
+If everythingis set up properly, you chould be able to run
+
+	$ bmake dbcreate dbbuild
