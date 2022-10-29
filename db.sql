@@ -2,12 +2,25 @@ create extension unaccent;
 create extension pgcrypto;
 create extension pgjwt;     -- https://github.com/michelp/pgjwt
 
--- create role root nologin;
--- create role master nologin;
--- create role leader nologin;
--- create role admin nologin;
--- create role adminguest nologin;
--- create role guest nologin;
+create or replace function role_create(text)
+returns void as $$
+begin
+	if not exists(select 1 from pg_roles where rolname=$1) then
+		execute format('create role %I nologin', $1);
+	else
+		raise notice '"%" role already exists.', $1;
+	end if;
+end
+$$ language plpgsql;
+
+select role_create('root');
+select role_create('master');
+select role_create('leader');
+select role_create('admin');
+select role_create('adminguest');
+select role_create('guest');
+
+drop function role_create(text);
 
 create domain epiphet as name check (value ~ '^[a-z][a-z0-9\-]+$');
 

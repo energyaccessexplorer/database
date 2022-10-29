@@ -1,5 +1,3 @@
-DB = ${PG}/${DB_NAME}
-
 TIME != date +'%Y-%m-%d--%T'
 DUMP = ${DB_NAME}-${TIME}-${env}.dump
 
@@ -10,15 +8,15 @@ dump = dumps/latest-data
 .endif
 
 dblist:
-	@psql ${DB} \
+	@psql ${PG} \
 		--pset="pager=off" \
 		--command="\dt[+]"
 
 dbconsole:
-	PAGER="less -S" psql ${DB}
+	PAGER="less -S" psql ${PG}
 
 dbdumpschema:
-	@pg_dump ${DB} \
+	@pg_dump ${PG} \
 		--verbose \
 		--format=p \
 		--no-owner \
@@ -27,7 +25,7 @@ dbdumpschema:
 	@(cd dumps && ln -sf ${DUMP}-schema latest-schema)
 
 dbdumpdata:
-	@pg_dump ${DB} \
+	@pg_dump ${PG} \
 		--verbose \
 		--format=p \
 		--no-owner \
@@ -44,14 +42,14 @@ dbcreate:
 	psql ${PG}/template1 -q -c "create database ${DB_NAME};"
 
 dbbuild:
-	@echo ${DB}
+	@echo ${PG}
 
 	@for file in ${SQL_FILES}; do \
-		psql ${DB} -v ON_ERROR_STOP=on --file=$$file.sql  >/dev/null; \
+		psql ${PG} -v ON_ERROR_STOP=on --file=$$file.sql  >/dev/null; \
 	done
 
 dbrestore:
-	@psql ${DB} \
+	@psql ${PG} \
 		-P tuples_only=on \
 		-v ON_ERROR_STOP=on \
 		--command="set session_replication_role = replica;" \
