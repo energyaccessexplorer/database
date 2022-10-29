@@ -10,6 +10,11 @@ create policy public_select on geographies
 	to public
 	using (not flagged and ('production' = any(deployment)));
 
+create policy guest_select on geographies
+	for select
+	to guest
+	using (not flagged and envs_check(deployment) and circle_roles_check(circle, 'guest'));
+
 create policy adminguest_select on geographies
 	for select
 	to adminguest
