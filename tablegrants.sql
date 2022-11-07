@@ -1,6 +1,8 @@
 grant select on all tables in schema public to guest;
 grant select on all tables in schema public to adminguest;
 
+-- ROLES
+
 grant all on datasets to admin;
 grant select on all tables in schema public to admin;
 

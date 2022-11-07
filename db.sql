@@ -64,13 +64,20 @@ language plpgsql immutable as $$ begin
 	return new;
 end $$;
 
-create function circle_roles_check(circlename epiphet, variadic rolenames name[])
+create function circle_check(circlename epiphet)
 returns boolean as $$
-	select ((current_role in (select unnest(rolenames))) and
-		current_setting('request.jwt.claims', true)::jsonb->'data'->'circles' ? circlename);
+	select current_setting('request.jwt.claims', true)::jsonb->'data'->'circles' ? circlename;
 $$ language sql immutable;
 
 create function envs_check(envs environments[])
-returns boolean as $$ begin
-	return (current_setting('request.jwt.claims', true)::jsonb->'data'->'envs' ?| envs::text[]);
-end $$ language plpgsql immutable;
+returns boolean as $$
+	select current_setting('request.jwt.claims', true)::jsonb->'data'->'envs' ?| envs::text[];
+$$ language sql immutable;
+
+create function circle_roles_check(circlename epiphet, variadic rolenames name[])
+returns boolean as $$
+	select (
+		circle_check(circlename) and
+		(current_role in (select unnest(rolenames)))
+	);
+$$ language sql immutable;

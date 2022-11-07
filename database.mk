@@ -8,15 +8,15 @@ dump = dumps/latest-data
 .endif
 
 dblist:
-	@psql ${PG} \
+	@psql ${DB} \
 		--pset="pager=off" \
 		--command="\dt[+]"
 
 dbconsole:
-	PAGER="less -S" psql ${PG}
+	PAGER="less -S" psql ${DB}
 
 dbdumpschema:
-	@pg_dump ${PG} \
+	@pg_dump ${DB} \
 		--verbose \
 		--format=p \
 		--no-owner \
@@ -25,7 +25,7 @@ dbdumpschema:
 	@(cd dumps && ln -sf ${DUMP}-schema latest-schema)
 
 dbdumpdata:
-	@pg_dump ${PG} \
+	@pg_dump ${DB} \
 		--verbose \
 		--format=p \
 		--no-owner \
@@ -34,26 +34,37 @@ dbdumpdata:
 	@(cd dumps && ln -sf ${DUMP}-data latest-data)
 
 dbdrop:
-	psql ${PG}/template1 -q -c "update pg_database set datallowconn = 'false' where datname = '${DB_NAME}';"
-	psql ${PG}/template1 -q -c "select pg_terminate_backend(pid) from pg_stat_activity where datname = '${DB_NAME}';" >/dev/null
-	psql ${PG}/template1 -q -c "drop database ${DB_NAME};"
+	psql ${PG}/template1 \
+		--quiet \
+		--command="update pg_database set datallowconn = 'false' where datname = '${DB_NAME}';"
+
+	psql ${PG}/template1 \
+		--quiet \
+		--command="select pg_terminate_backend(pid) from pg_stat_activity where datname = '${DB_NAME}';" >/dev/null
+
+	psql ${PG}/template1 \
+		--quiet \
+		--command="drop database ${DB_NAME};"
 
 dbcreate:
-	psql ${PG}/template1 -q -c "create database ${DB_NAME};"
+	psql ${PG}/template1 \
+		--quiet \
+		--command="create database ${DB_NAME};"
 
 dbbuild:
-	@echo ${PG}
-
 	@for file in ${SQL_FILES}; do \
-		psql ${PG} -v ON_ERROR_STOP=on --file=$$file.sql  >/dev/null; \
+		psql ${DB} \
+			--set="ON_ERROR_STOP=on" \
+			--file="$$file.sql" \
+			>/dev/null; \
 	done
 
 dbrestore:
-	@psql ${PG} \
-		-P tuples_only=on \
-		-v ON_ERROR_STOP=on \
+	@psql ${DB} \
+		--set="ON_ERROR_STOP=on" \
+		--pset="tuples_only=on" \
 		--command="set session_replication_role = replica;" \
-		--file=${dump}
+		--file="${dump}"
 
 	@echo "Restored from dumpfile: ${dump}"
 
@@ -63,3 +74,8 @@ dbrebuild:
 .else
 dbrebuild: dbdrop dbcreate dbbuild dbrestore
 .endif
+
+dbsnippet:
+	@psql ${DB} \
+		--pset="pager=off" \
+		--file="${snippet}"
