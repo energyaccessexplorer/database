@@ -25,7 +25,7 @@ create policy envs on geographies
 
 create policy circles on geographies
 	to admin
-	using (circle_roles_check(circle, 'admin', 'leader'));
+	using (circle_roles_check(circle, 'admin', 'leader', 'manager'));
 
 create policy superusers on geographies
 	using (current_role in ('master', 'root'));

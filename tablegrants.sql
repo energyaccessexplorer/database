@@ -9,7 +9,10 @@ grant select on all tables in schema public to admin;
 grant admin to leader;
 grant all on geographies to leader;
 
-grant leader to master;
-grant all on categories to master;
+grant leader to manager;
+grant all on categories to manager;
+
+grant manager to master;
+-- masters can access users too and are not restricted by circles
 
 grant all on all tables in schema public to root;

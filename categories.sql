@@ -3,6 +3,8 @@ create table categories (
 	, name epiphet unique not null
 	, name_long varchar(64) not null
 	, unit varchar(32)
+	, circle epiphet default 'everywhere'
+	, deployment environments[] default array[]::environments[]
 	, domain jsonb default 'null'
 	, domain_init jsonb default 'null'
 	, colorstops jsonb default 'null'
@@ -61,6 +63,22 @@ begin
 	return x || coalesce('-' || y, '');
 end
 $$ language plpgsql immutable;
+
+create function categories_before_update()
+returns trigger as $$
+begin
+	if ((current_role not in ('master', 'root')) and 'production' = any(new.deployment)) then
+		raise exception 'You are do not have enough permissions to edit categories in production';
+	end if;
+
+	return new;
+end
+$$ language plpgsql;
+
+create trigger categories_deployments
+	before insert or update on categories
+	for each row
+	execute procedure categories_before_update();
 
 create trigger categories_before_create
 	before insert on categories

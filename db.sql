@@ -15,6 +15,7 @@ $$ language plpgsql;
 
 select role_create('root');
 select role_create('master');
+select role_create('manager');
 select role_create('leader');
 select role_create('admin');
 select role_create('adminguest');
