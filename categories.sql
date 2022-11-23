@@ -67,7 +67,7 @@ $$ language plpgsql immutable;
 create function categories_before_update()
 returns trigger as $$
 begin
-	if ((current_role not in ('master', 'root')) and 'production' = any(new.deployment)) then
+	if ((current_role not in ('director', 'root')) and 'production' = any(new.deployment)) then
 		raise exception 'You are do not have enough permissions to edit categories in production';
 	end if;
 

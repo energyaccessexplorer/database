@@ -28,4 +28,4 @@ create policy circles on geographies
 	using (circle_roles_check(circle, 'admin', 'leader', 'manager'));
 
 create policy superusers on geographies
-	using (current_role in ('master', 'root'));
+	using (current_role in ('director', 'root'));

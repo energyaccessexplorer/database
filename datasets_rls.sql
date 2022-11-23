@@ -10,4 +10,4 @@ create policy circles on datasets
 	using (circle_roles_check(geography_circle, 'admin', 'leader', 'manager'));
 
 create policy superusers on datasets
-	using (current_role in ('master', 'root'));
+	using (current_role in ('director', 'root'));
