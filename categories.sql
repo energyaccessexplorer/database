@@ -55,7 +55,7 @@ begin
 	when (c.timeline <> 'null') then
 		'timeline'
 	when (x <> 'table' and c.csv <> 'null') then
-		'fixed'
+		'valued'
 	else
 		null
 	end) into y;
