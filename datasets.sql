@@ -58,7 +58,7 @@ begin
 		where ($1.configuration->'mutant_targets'->>0) = any(array[d.category_name, d.name])
 		and d.geography_id = $1.geography_id into x;
 
-	return x || '-mutant';
+	return coalesce(x || '-', '') || 'mutant';
 end
 $$ language plpgsql immutable;
 
