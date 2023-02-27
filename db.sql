@@ -82,3 +82,19 @@ returns boolean as $$
 		(current_role in (select unnest(rolenames)))
 	);
 $$ language sql immutable;
+
+create function user_check()
+returns void as $$
+declare
+	user_id text;
+begin
+	select current_setting('request.jwt.claims', true)::jsonb->>'uuid' into user_id;
+
+	perform set_config('user.id', user_id, true);
+end
+$$ language plpgsql security definer;
+
+create function current_user_uuid()
+returns uuid as $$
+	select current_setting('user.id', true)::uuid;
+$$ language sql security definer;

@@ -1,6 +1,11 @@
 grant select on all tables in schema public to guest;
 grant select on all tables in schema public to adminguest;
 
+-- SESSIONS/SNAPSHOTS
+
+grant insert on sessions to public;
+grant insert on snapshots to public;
+
 -- ROLES
 
 grant all on datasets to admin;

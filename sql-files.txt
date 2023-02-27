@@ -2,7 +2,11 @@ db
 categories
 geographies
 datasets
+sessions
+snapshots
 tablegrants
 categories_rls
 geographies_rls
 datasets_rls
+sessions_rls
+snapshots_rls
