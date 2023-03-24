@@ -63,6 +63,27 @@ returns table(id uuid, obj jsonb) as $$
 	) select id, obj from r where obj is not null;
 $$ language sql;
 
+create view geographies_tree_down as
+with recursive tree as
+(
+	select id, parent_id, array[id] as path from geographies
+	union all
+	select c.id, c.parent_id, array_prepend(c.id, t.path) from geographies c
+		inner join tree t on c.id = t.parent_id
+)
+select id, path from tree order by array_length(path,1) asc;
+
+create view geographies_tree_up as
+with recursive tree as
+(
+	select id, parent_id, array[id] as path from geographies
+		where parent_id is null
+	union all
+	select c.id, c.parent_id, array_append(t.path, c.id) from geographies c
+		inner join tree t on t.id = c.parent_id
+)
+select id, path from tree;
+
 create function parent_sort_branches(geographies)
 returns jsonb as $$
 	select obj from parent_configuration('sort_branches') t where t.id = $1.id;

@@ -1,6 +1,9 @@
 grant select on all tables in schema public to guest;
 grant select on all tables in schema public to adminguest;
 
+grant select on geographies_tree_up to public;
+grant select on geographies_tree_down to public;
+
 -- SESSIONS/SNAPSHOTS
 
 grant insert on sessions to public;
