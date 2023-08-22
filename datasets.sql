@@ -6,7 +6,6 @@ create table datasets (
 	, name_long text default null
 	, unique(geography_id, name)
 	, unique(geography_id, name_long)
-	, geography_circle epiphet generated always as (geography_circle(geography_id)) stored
 	, deployment environments[] default array[]::environments[]
 	, flagged boolean default false
 	, configuration jsonb default 'null'

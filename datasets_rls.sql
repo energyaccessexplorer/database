@@ -7,7 +7,9 @@ create policy public_select on datasets
 
 create policy circles on datasets
 	to admin
-	using (circle_roles_check(geography_circle, 'admin', 'leader', 'manager'));
+	using (
+		circle_roles_check(geography_circle(geography_id), 'admin', 'leader', 'manager')
+	);
 
 create policy superusers on datasets
 	using (current_role in ('director', 'root'));
