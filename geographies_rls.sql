@@ -19,13 +19,12 @@ create policy adminguest_select on geographies
 
 -- ADMIN
 
-create policy envs on geographies
+create policy circles_deployments on geographies
 	to admin
-	using (envs_check(deployment));
-
-create policy circles on geographies
-	to admin
-	using (circle_roles_check(circle, 'admin', 'leader', 'manager'));
+	using (
+		circle_roles_check(circle, 'admin', 'leader', 'manager')
+		and envs_check(deployment)
+	);
 
 create policy superusers on geographies
 	using (current_role in ('director', 'root'));
