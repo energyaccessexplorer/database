@@ -6,8 +6,8 @@ grant select on geographies_tree_down to public;
 
 -- SESSIONS/SNAPSHOTS
 
-grant insert on sessions to public;
-grant insert on snapshots to public;
+grant select, insert, update on sessions to public;
+grant select, insert on snapshots to public;
 
 -- ROLES
 
