@@ -28,6 +28,27 @@ create domain epiphet as name check (value ~ '^[a-z][a-z0-9\-]+$');
 create type environments as enum ('test', 'staging', 'production', 'training', 'dev');
 -- select enum_range(null::environments);
 
+create table events_queue (message jsonb);
+
+create function event_create(trgr text, payload jsonb)
+returns jsonb as $$
+declare
+	message jsonb;
+
+begin
+	message = jsonb_build_object(
+		'id', current_timestamp,
+		'trigger', trgr,
+		'payload', payload
+	);
+
+	insert into events_queue (message) values (message);
+
+	perform pg_notify('events', message::text);
+
+	return message;
+end $$ language plpgsql;
+
 create function flagged()
 returns trigger
 language plpgsql immutable as $$ begin
