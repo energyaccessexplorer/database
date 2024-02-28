@@ -5,8 +5,8 @@ datasets
 sessions
 snapshots
 tablegrants
-categories_rls
-geographies_rls
-datasets_rls
-sessions_rls
-snapshots_rls
+categories-rls
+geographies-rls
+datasets-rls
+sessions-rls
+snapshots-rls

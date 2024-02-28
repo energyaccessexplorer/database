@@ -12,6 +12,7 @@ grant select, insert on snapshots to public;
 -- ROLES
 
 grant all on datasets to admin;
+
 grant select on all tables in schema public to admin;
 
 grant admin to leader;
