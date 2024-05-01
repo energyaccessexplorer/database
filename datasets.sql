@@ -40,7 +40,7 @@ create trigger datasets_flagged
 	for each row
 	execute procedure flagged();
 
-create or replace function datasets_flagged()
+create function datasets_flagged()
 returns trigger
 language plpgsql immutable as $$ begin
 	if (not old.flagged and new.flagged) then

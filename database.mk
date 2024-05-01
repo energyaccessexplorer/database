@@ -1,3 +1,5 @@
+DB = ${PG}/${DB_NAME}
+
 TIME != date +'%Y-%m-%d--%T'
 DUMP = ${DB_NAME}-${TIME}-${env}.dump
 
@@ -5,6 +7,11 @@ SQL_FILES != cat sql-files.txt
 
 .ifndef dump
 dump = dumps/latest-data
+.endif
+
+.ifdef db
+DB = ${db}
+.else
 .endif
 
 list:

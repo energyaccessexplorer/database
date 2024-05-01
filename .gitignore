@@ -1,1 +1,3 @@
 /dumps
+/migrations
+/snippet*.sql
