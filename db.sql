@@ -64,7 +64,7 @@ create function before_any_create()
 returns trigger
 language plpgsql immutable as $$ begin
 	new.created = current_timestamp;
-	new.created_by = regexp_replace(current_setting('request.jwt.claims', true)::jsonb->>'email', '(.*)@.*', '\1');
+	new.created_by = current_setting('request.jwt.claims', true)::jsonb->>'email';
 
 	return new;
 end $$;
@@ -81,7 +81,7 @@ language plpgsql immutable as $$ begin
 	end if;
 
 	new.updated = current_timestamp;
-	new.updated_by = regexp_replace(current_setting('request.jwt.claims', true)::jsonb->>'email', '(.*)@.*', '\1');
+	new.updated_by = current_setting('request.jwt.claims', true)::jsonb->>'email';
 
 	return new;
 end $$;

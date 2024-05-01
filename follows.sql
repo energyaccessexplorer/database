@@ -1,0 +1,17 @@
+create table follows (
+	  email text
+	, dataset_id uuid references datasets (id) on delete cascade not null
+
+	, created date default current_date
+	, created_by varchar(64)
+);
+
+create function dataset_info(follows)
+returns text as $$
+	select info(d) from datasets d where id = $1.dataset_id;
+$$ language sql immutable;
+
+create trigger follows_before_create
+	before insert on follows
+	for each row
+	execute procedure before_any_create();
