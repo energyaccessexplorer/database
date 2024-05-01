@@ -79,6 +79,11 @@ returns bigint as $$
 	select count(1) from datasets where geography_id = $1.id;
 $$ language sql;
 
+create function info(datasets)
+returns text as $$
+	select geography_name($1) || ' - ' || category_name($1);
+$$ language sql immutable;
+
 create trigger datasets_before_create
 	before insert on datasets
 	for each row
