@@ -40,6 +40,24 @@ create trigger datasets_flagged
 	for each row
 	execute procedure flagged();
 
+create or replace function datasets_flagged()
+returns trigger
+language plpgsql immutable as $$ begin
+	if (not old.flagged and new.flagged) then
+		perform event_create('dataset:flagged', jsonb_build_object(
+			'id', new.id,
+			'last_updated_by', old.updated_by
+		));
+	end if;
+
+	return new;
+end $$;
+
+create trigger datasets_flagged_notify
+	before update on datasets
+	for each row
+	execute procedure datasets_flagged();
+
 --
 -- FETCHING
 --
