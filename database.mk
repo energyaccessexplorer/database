@@ -65,9 +65,9 @@ restore:
 reload:
 	@ psql ${DB} --quiet --command "NOTIFY pgrst, 'reload schema';"
 
-.if ${env} == "production"
+ifeq ($(env), production)
 rebuild:
-	@ echo "PRODUCTION. Do it by hand: drop create build restore reload"
-.else
+	@echo "PRODUCTION. Do it by hand: drop create build restore reload"
+else
 rebuild: drop create build restore reload
-.endif
+endif
