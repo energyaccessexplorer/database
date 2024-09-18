@@ -12,7 +12,7 @@ create table datasets (
 	, category_overrides jsonb default 'null'
 	, source_files jsonb default '[]'
 	, processed_files jsonb default '[]'
-	, notification_lastest date
+	, notification_latest date
 	, notification_interval text
 	, check(notification_interval ~ '^[0-9]{1,2} (day|week|month|year)s?$')
 	, metadata jsonb default jsonb_build_object(

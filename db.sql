@@ -109,7 +109,7 @@ returns void as $$
 declare
 	user_id text;
 begin
-	select current_setting('request.jwt.claims', true)::jsonb->>'uuid' into user_id;
+	select current_setting('request.jwt.claims', true)::jsonb->>'id' into user_id;
 
 	perform set_config('user.id', user_id, true);
 end
