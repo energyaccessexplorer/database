@@ -22,21 +22,36 @@ services:
     networks:
       - eae_network
 
+  postgrest:
+    image: postgrest/postgrest
+    ports:
+      - 3000:3000
+    environment:
+      PGRST_DB_URI: postgres://postgres:password@db:5432/eae_dev
+      PGRST_DB_SCHEMA: public
+      PGRST_DB_ANON_ROLE: anon
+      PGRST_JWT_SECRET: "9ToEfPawR_CLgZvz!iIG8QvSU"
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - eae_network
+
   server:
     build: .
     ports:
-      - 3000:3000
+      - 3001:3000
     environment:
       PGRST_DB_URI: postgres://postgres:password@db:5432/eae_dev
       PGRST_OPENAPI_SERVER_PROXY_URI: http://127.0.0.1:3000
     depends_on:
       db:
         condition: service_healthy
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:3000/"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
+    # healthcheck:
+    #   test: ["CMD", "curl", "-f", "http://localhost:3001/"]
+    #   interval: 10s
+    #   timeout: 5s
+    #   retries: 5
     networks:
       - eae_network
 
@@ -49,8 +64,8 @@ services:
     environment:
       API_URL: http://localhost:3000/
     depends_on:
-        db:
-          condition: service_healthy
+      db:
+        condition: service_healthy
     networks:
       - eae_network
 
