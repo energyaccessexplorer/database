@@ -2,31 +2,41 @@ create extension unaccent;
 create extension pgcrypto;
 create extension pgjwt;     -- https://github.com/michelp/pgjwt
 
-create or replace function role_create(text)
-returns void as $$
-begin
-	if not exists(select 1 from pg_roles where rolname=$1) then
-		execute format('create role %I nologin', $1);
-	else
-		raise notice '"%" role already exists.', $1;
-	end if;
-end
-$$ language plpgsql;
-
-select role_create('root');
-select role_create('director');
-select role_create('manager');
-select role_create('leader');
-select role_create('admin');
-select role_create('adminguest');
-select role_create('guest');
-
-drop function role_create(text);
+create schema private;
+grant usage on schema private to public;
 
 create domain epiphet as name check (value ~ '^[a-z][a-z0-9\-]+$');
 
 create type environments as enum ('test', 'staging', 'production', 'training', 'dev');
 -- select enum_range(null::environments);
+
+create function public.current_user_id()
+returns uuid
+language sql security definer
+as $$
+	select current_setting('user.id', true)::uuid;
+$$;
+
+create function public.current_user_role()
+returns text
+language sql security definer
+as $$
+	select current_setting('user.role', true)::text;
+$$;
+
+create function public.current_user_email()
+returns text
+language sql security definer
+as $$
+	select current_setting('user.email', true)::text;
+$$;
+
+create function public.current_user_data(text)
+returns jsonb
+language sql security definer
+as $$
+	select current_setting('user.data', true)::jsonb->$1;
+$$;
 
 create table events_queue (message jsonb);
 
@@ -64,7 +74,7 @@ create function before_any_create()
 returns trigger
 language plpgsql immutable as $$ begin
 	new.created = current_timestamp;
-	new.created_by = current_setting('request.jwt.claims', true)::jsonb->>'email';
+	new.created_by = current_user_email();
 
 	return new;
 end $$;
@@ -81,41 +91,17 @@ language plpgsql immutable as $$ begin
 	end if;
 
 	new.updated = current_timestamp;
-	new.updated_by = current_setting('request.jwt.claims', true)::jsonb->>'email';
+	new.updated_by = current_user_email();
 
 	return new;
 end $$;
 
 create function circle_check(circlename epiphet)
 returns boolean as $$
-	select current_setting('request.jwt.claims', true)::jsonb->'data'->'circles' ? circlename;
+	select current_user_data('circles') ? circlename;
 $$ language sql immutable;
 
 create function envs_check(envs environments[])
 returns boolean as $$
-	select current_setting('request.jwt.claims', true)::jsonb->'data'->'envs' ?| envs::text[];
+	select current_user_data('envs') ?| envs::text[];
 $$ language sql immutable;
-
-create function circle_roles_check(circlename epiphet, variadic rolenames name[])
-returns boolean as $$
-	select (
-		circle_check(circlename) and
-		(current_role in (select unnest(rolenames)))
-	);
-$$ language sql immutable;
-
-create function user_check()
-returns void as $$
-declare
-	user_id text;
-begin
-	select current_setting('request.jwt.claims', true)::jsonb->>'id' into user_id;
-
-	perform set_config('user.id', user_id, true);
-end
-$$ language plpgsql security definer;
-
-create function current_user_uuid()
-returns uuid as $$
-	select current_setting('user.id', true)::uuid;
-$$ language sql security definer;

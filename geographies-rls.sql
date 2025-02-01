@@ -4,27 +4,36 @@ alter table geographies enable row level security;
 
 create policy public_select on geographies
 	for select
-	to public
-	using (not flagged and ('production' = any(deployment)));
+	using (
+		not flagged
+		and ('production' = any(deployment))
+	);
 
 create policy guest_select on geographies
 	for select
-	to guest
-	using (not flagged and envs_check(deployment) and circle_roles_check(circle, 'guest'));
-
-create policy adminguest_select on geographies
-	for select
-	to adminguest
-	using ('production' = any(deployment));
+	using (
+		not flagged
+		and current_user_role() in ('guest')
+		and envs_check(deployment)
+		and circle_check(circle)
+	);
 
 -- ADMIN
 
-create policy circles_deployments on geographies
-	to admin
+create policy admin_select on geographies
+	for select
 	using (
-		circle_roles_check(circle, 'admin', 'leader', 'manager')
+		current_user_role() in ('admin')
+		and circle_check(circle)
+		and envs_check(deployment)
+	);
+
+create policy circles_deployments on geographies
+	using (
+		current_user_role() in ('leader', 'manager')
+		and circle_check(circle)
 		and envs_check(deployment)
 	);
 
 create policy superusers on geographies
-	using (current_role in ('director', 'root'));
+	using (current_user_role() in ('director', 'root'));

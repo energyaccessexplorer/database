@@ -4,11 +4,14 @@ geographies
 datasets
 sessions
 snapshots
+users
 follows
-tablegrants
 categories-rls
 geographies-rls
 datasets-rls
 sessions-rls
 snapshots-rls
 follows-rls
+users-rls
+user-credentials
+tablegrants

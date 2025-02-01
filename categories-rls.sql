@@ -5,9 +5,12 @@ create policy public on categories
 	to public
 	using (true);
 
-create policy circles on categories
-	to manager
-	using (circle_check(circle) and envs_check(deployment));
+create policy circles_deployments on categories
+	using (
+		current_user_role() in ('manager')
+		and circle_check(circle)
+		and envs_check(deployment)
+	);
 
 create policy superusers on categories
-	using (current_role in ('director', 'root'));
+	using (current_user_role() in ('director', 'root'));
