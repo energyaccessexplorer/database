@@ -1,3 +1,6 @@
-DB_NAME = ea_dev
-PG = postgres://postgres@localhost/${DB_NAME}
-.include "database.mk"
+default:
+	psql ${DB} --file="snippet.sql"
+
+.include "./database.mk"
+
+-include .env

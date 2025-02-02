@@ -1,6 +1,6 @@
 alter table sessions enable row level security;
 
-create policy root on sessions
+create policy superusers on sessions
 	using (current_user_role() in ('director', 'root'));
 
 create policy owner on sessions

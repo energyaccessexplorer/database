@@ -8,8 +8,8 @@ declare
 begin
 	if _rwid is null then
 		perform set_config('user.id',    null,   true);
-		perform set_config('user.data',  null,   true);
 		perform set_config('user.email', null,   true);
+		perform set_config('user.data', 'null',   true);
 		perform set_config('user.role', 'guest', true);
 
 		return;
