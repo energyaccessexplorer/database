@@ -58,6 +58,11 @@ create trigger datasets_flagged_notify
 	for each row
 	execute procedure datasets_flagged();
 
+create function geography_circle(datasets)
+returns epiphet as $$
+	select geography_circle($1.geography_id);
+$$ language sql immutable;
+
 --
 -- FETCHING
 --
