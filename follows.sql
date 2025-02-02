@@ -1,6 +1,7 @@
 create table follows (
-	  email text
+	  user_id uuid references users (id) on delete cascade not null
 	, dataset_id uuid references datasets (id) on delete cascade not null
+	, unique (user_id, dataset_id)
 
 	, created date default current_date
 	, created_by varchar(64)
