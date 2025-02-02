@@ -25,6 +25,9 @@ dumpschema:
 		--format=p \
 		--no-owner \
 		--schema-only \
+		| grep -v '^-- Dependencies *' \
+		| grep -v '^-- TOC *' \
+		| grep -v '^-- Completed on *' \
 		> dumps/schema-${DUMP}
 
 	@ (cd dumps && ln -sf schema-${DUMP} schema-latest)
