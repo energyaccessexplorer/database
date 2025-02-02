@@ -12,7 +12,7 @@ create policy superusers on users
 
 create policy same_circle on users
 using (
-	current_user_data('circles') ?| array(select json_array_elements_text((data->'circles')::json))::text[] and
-	current_user_role() in ('leader', 'manager') and
-	role::users_enum < current_user_role()::users_enum
+	current_user_role() in ('leader', 'manager')
+	and role::users_enum < current_user_role()::users_enum
+	and current_user_data('circles') ?| array(select json_array_elements_text((data->'circles')::json))::text[]
 );
