@@ -44,8 +44,15 @@ function finish_block() {
 
 	system("mkdir -p " filepath)
 
-	filename = gensub(/\(.*\)$/, "", "g", name) "." tolower(type)
+	filename = gensub(/\(.*\)$/, "", "g", name)
 	gsub(/ /, "-", filename)
+
+	if (type == "ACL") {
+		filename = gensub(/^TABLE-(.*)/, "\\1.table-acl", 1, filename)
+		filename = gensub(/^SCHEMA-(.*)/, "\\1.schema-acl", 1, filename)
+	} else {
+		filename = filename "." tolower(gensub(/ /, "-", "g", type))
+	}
 
 	file = filepath "/" filename ".sql"
 
@@ -145,7 +152,7 @@ BEGIN {
 	content = ""
 	table   = ""
 
-	if (type == "SCHEMA" || type == "EXTENSION" || type == "COMMENT") {
+	if (schema == "-" || type == "SCHEMA" || type == "EXTENSION" || type == "COMMENT") {
 		schema = "global"
 	}
 

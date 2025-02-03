@@ -111,3 +111,15 @@
 ./sql/public/snapshots-superusers.policy.sql
 ./sql/public/users-superusers.policy.sql
 ./sql/public/users.row-security.sql
+./sql/global/private.schema-acl.sql
+./sql/global/public.schema-acl.sql
+./sql/public/datasets.table-acl.sql
+./sql/public/follows.table-acl.sql
+./sql/public/geographies.table-acl.sql
+./sql/public/categories.table-acl.sql
+./sql/public/events_queue.table-acl.sql
+./sql/public/geographies_tree_down.table-acl.sql
+./sql/public/geographies_tree_up.table-acl.sql
+./sql/public/sessions.table-acl.sql
+./sql/public/snapshots.table-acl.sql
+./sql/public/users.table-acl.sql
