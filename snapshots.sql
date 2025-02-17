@@ -1,7 +1,10 @@
 create table snapshots (
-	  time bigint
-	, session_id bigint references sessions (time) on delete cascade
-	, config jsonb default null
+      "time" bigint
+    , config jsonb
+    , title text
+    , env public.environments NOT NULL
+    , user_id uuid NOT NULL
+    , geography_id uuid NOT NULL
 	, unique(session_id, time)
 	);
 

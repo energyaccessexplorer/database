@@ -2,14 +2,12 @@ db
 categories
 geographies
 datasets
-sessions
 snapshots
 users
 follows
 categories-rls
 geographies-rls
 datasets-rls
-sessions-rls
 snapshots-rls
 follows-rls
 users-rls

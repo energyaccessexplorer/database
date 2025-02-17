@@ -47,7 +47,6 @@
 ./sql/public/events_queue.table.sql
 ./sql/public/geographies_tree_down.view.sql
 ./sql/public/geographies_tree_up.view.sql
-./sql/public/sessions.table.sql
 ./sql/public/snapshots.table.sql
 ./sql/public/users.table.sql
 ./sql/public/categories-categories_name_key.constraint.sql
@@ -57,8 +56,6 @@
 ./sql/public/datasets-datasets_pkey.constraint.sql
 ./sql/public/follows-follows_user_id_dataset_id_key.constraint.sql
 ./sql/public/geographies-geographies_pkey.constraint.sql
-./sql/public/sessions-sessions_pkey.constraint.sql
-./sql/public/sessions-sessions_title_user_id_key.constraint.sql
 ./sql/public/snapshots-snapshots_session_id_time_key.constraint.sql
 ./sql/public/users-users_email_key.constraint.sql
 ./sql/public/users-users_pkey.constraint.sql
@@ -83,8 +80,8 @@
 ./sql/public/follows-follows_user_id_fkey.fk-constraint.sql
 ./sql/public/datasets-geography.fk-constraint.sql
 ./sql/public/geographies-parent.fk-constraint.sql
-./sql/public/sessions-sessions_geography_id_fkey.fk-constraint.sql
-./sql/public/snapshots-snapshots_session_id_fkey.fk-constraint.sql
+./sql/public/snapshots-snapshots_geography_id_fkey.fk-constraint.sql
+./sql/public/snapshots-snapshots_user_id_fkey.fk-constraint.sql
 ./sql/public/geographies-admin_select.policy.sql
 ./sql/public/categories.row-security.sql
 ./sql/public/categories-circles_deployments.policy.sql
@@ -94,20 +91,17 @@
 ./sql/public/follows.row-security.sql
 ./sql/public/geographies.row-security.sql
 ./sql/public/geographies-guest_select.policy.sql
-./sql/public/sessions-owner.policy.sql
 ./sql/public/snapshots-owner.policy.sql
 ./sql/public/categories-public.policy.sql
 ./sql/public/datasets-public_select.policy.sql
 ./sql/public/geographies-public_select.policy.sql
 ./sql/public/users-same_circle.policy.sql
 ./sql/public/users-self.policy.sql
-./sql/public/sessions.row-security.sql
 ./sql/public/snapshots.row-security.sql
 ./sql/public/categories-superusers.policy.sql
 ./sql/public/datasets-superusers.policy.sql
 ./sql/public/follows-superusers.policy.sql
 ./sql/public/geographies-superusers.policy.sql
-./sql/public/sessions-superusers.policy.sql
 ./sql/public/snapshots-superusers.policy.sql
 ./sql/public/users-superusers.policy.sql
 ./sql/public/users.row-security.sql
@@ -120,6 +114,5 @@
 ./sql/public/events_queue.table-acl.sql
 ./sql/public/geographies_tree_down.table-acl.sql
 ./sql/public/geographies_tree_up.table-acl.sql
-./sql/public/sessions.table-acl.sql
 ./sql/public/snapshots.table-acl.sql
 ./sql/public/users.table-acl.sql
