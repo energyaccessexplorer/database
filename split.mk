@@ -3,6 +3,8 @@ SQL ?= ./sql
 AWK = gawk
 COLORDIFF != which colordiff || which cat
 
+schemajoin = ./tmp/schema-join-${TIME}.sql
+
 split:
 	@ mkdir -p ./tmp
 	@ if [ -d ${SQL} ]; then cp -r ${SQL} ./tmp/${SQL}-${TIME}; fi
@@ -24,13 +26,13 @@ diff:
 	|| exit 0
 
 join:
-	@ cp schema-header.sql ${schema}
+	@ cp schema-header.sql ${schemajoin}
 
 	@ while read file; do \
-		cat $$file >> ${schema}; \
-		printf "\n\n" >> ${schema}; \
+		cat $$file >> ${schemajoin}; \
+		printf "\n\n" >> ${schemajoin}; \
 	done <${SQL}/include.txt
 
-	@ cat schema-footer.sql >> ${schema}
+	@ cat schema-footer.sql >> ${schemajoin}
 
-	@ echo "Wrote: ${schema}"
+	@ echo "Wrote: ${schemajoin}"
