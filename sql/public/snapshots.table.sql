@@ -4,7 +4,6 @@
 
 CREATE TABLE public.snapshots (
     "time" bigint,
-    session_id bigint,
     config jsonb,
     title text,
     env public.environments NOT NULL,
