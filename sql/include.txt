@@ -14,6 +14,8 @@
 ./sql/public/before_any_create.function.sql
 ./sql/public/before_any_update.function.sql
 ./sql/public/categories_before_update.function.sql
+./sql/public/categories.table.sql
+./sql/public/category_datatype.function.sql
 ./sql/public/datasets.table.sql
 ./sql/public/category_name.function.sql
 ./sql/public/circle_check.function.sql
@@ -27,15 +29,12 @@
 ./sql/public/geographies.table.sql
 ./sql/public/datasets_count.function.sql
 ./sql/public/datasets_flagged.function.sql
-./sql/public/categories.table.sql
-./sql/public/datatype.function.sql
 ./sql/public/datatype.function.sql
 ./sql/public/delete_self.function.sql
 ./sql/public/email_change_fail.function.sql
 ./sql/public/envs_check.function.sql
 ./sql/public/event_create.function.sql
 ./sql/public/flagged.function.sql
-./sql/public/geography_circle.function.sql
 ./sql/public/geography_circle.function.sql
 ./sql/public/geography_name.function.sql
 ./sql/public/has_subgeographies.function.sql
@@ -110,10 +109,10 @@
 ./sql/global/authenticator.schema-acl.sql
 ./sql/global/private.schema-acl.sql
 ./sql/global/public.schema-acl.sql
+./sql/public/categories.table-acl.sql
 ./sql/public/datasets.table-acl.sql
 ./sql/public/follows.table-acl.sql
 ./sql/public/geographies.table-acl.sql
-./sql/public/categories.table-acl.sql
 ./sql/public/events_queue.table-acl.sql
 ./sql/public/geographies_tree_down.table-acl.sql
 ./sql/public/geographies_tree_up.table-acl.sql
