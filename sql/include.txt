@@ -57,7 +57,6 @@
 ./sql/public/datasets-datasets_pkey.constraint.sql
 ./sql/public/follows-follows_user_id_dataset_id_key.constraint.sql
 ./sql/public/geographies-geographies_pkey.constraint.sql
-./sql/public/snapshots-snapshots_session_id_time_key.constraint.sql
 ./sql/public/users-users_email_key.constraint.sql
 ./sql/public/users-users_pkey.constraint.sql
 ./sql/public/users-users_rwid_key.constraint.sql

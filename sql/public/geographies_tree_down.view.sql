@@ -15,7 +15,7 @@ CREATE VIEW public.geographies_tree_down AS
            FROM (public.geographies c
              JOIN tree t ON ((c.id = t.parent_id)))
         )
- SELECT tree.id,
-    tree.path
+ SELECT id,
+    path
    FROM tree
-  ORDER BY (array_length(tree.path, 1));
+  ORDER BY (array_length(path, 1));
