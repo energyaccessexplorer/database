@@ -3,8 +3,6 @@ DB ?= ${PG}/${DB_NAME}
 TIME != date +'%Y-%m-%d--%T'
 DUMP = ${DB_NAME}-${TIME}-${env}.dump
 
-SQL_FILES != cat sql-files.txt
-
 data ?= dumps/data-latest
 schema ?= dumps/schema-latest
 
@@ -55,11 +53,9 @@ create:
 	@ psql ${PG}/template1 --quiet --command "create database ${DB_NAME};"
 
 build:
-	@ for file in ${SQL_FILES}; do \
-		psql ${DB} \
-			--set="ON_ERROR_STOP=on" \
-			--file="$$file.sql" >/dev/null; \
-	done
+	psql ${DB} \
+		--set="ON_ERROR_STOP=on" \
+		--file="${schema}"
 
 restore:
 	@ psql ${DB} \
@@ -77,5 +73,5 @@ reload:
 rebuild:
 	@ echo "PRODUCTION. Do it by hand: drop create build restore reload"
 .else
-rebuild: drop create build restore reload
+rebuild: drop create join build restore reload
 .endif
