@@ -1,5 +1,7 @@
 default:
-	psql ${DB} --file="snippet.sql"
+	psql ${DB} \
+		--set="ON_ERROR_STOP=on" \
+		--file="snippet.sql"
 
 .include "./database.mk"
 .include "./split.mk"

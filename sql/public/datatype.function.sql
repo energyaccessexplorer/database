@@ -12,7 +12,7 @@ begin
 	select * from categories where id = $1.category_id into c;
 
 	if (not c.mutant) then
-		return datatype(c);
+		return category_datatype(c);
 	end if;
 
 	select d.datatype from datasets d
