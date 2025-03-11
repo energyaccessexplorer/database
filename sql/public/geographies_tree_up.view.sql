@@ -16,6 +16,6 @@ CREATE VIEW public.geographies_tree_up AS
            FROM (public.geographies c
              JOIN tree t ON ((t.id = c.parent_id)))
         )
- SELECT id,
-    path
+ SELECT tree.id,
+    tree.path
    FROM tree;
