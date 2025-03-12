@@ -44,6 +44,7 @@
 ./sql/public/parent_sort_datasets.function.sql
 ./sql/public/parent_sort_subbranches.function.sql
 ./sql/public/snapshot.function.sql
+./sql/public/type.function.sql
 ./sql/public/upgrade_fail.function.sql
 ./sql/public/events_queue.table.sql
 ./sql/public/geographies_tree_down.view.sql
