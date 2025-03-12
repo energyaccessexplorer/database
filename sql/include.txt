@@ -83,14 +83,15 @@
 ./sql/public/geographies-parent.fk-constraint.sql
 ./sql/public/snapshots-snapshots_geography_id_fkey.fk-constraint.sql
 ./sql/public/snapshots-snapshots_user_id_fkey.fk-constraint.sql
+./sql/public/datasets-admin_circles_deployments.policy.sql
 ./sql/public/geographies-admin_select.policy.sql
 ./sql/public/categories.row-security.sql
 ./sql/public/categories-circles_deployments.policy.sql
-./sql/public/datasets-circles_deployments.policy.sql
 ./sql/public/geographies-circles_deployments.policy.sql
 ./sql/public/datasets.row-security.sql
 ./sql/public/follows.row-security.sql
 ./sql/public/geographies.row-security.sql
+./sql/public/datasets-guest_circles_deployments.policy.sql
 ./sql/public/geographies-guest_select.policy.sql
 ./sql/public/snapshots-owner.policy.sql
 ./sql/public/categories-public.policy.sql
