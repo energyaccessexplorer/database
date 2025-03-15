@@ -16,7 +16,7 @@ begin
 	end if;
 
 	select d.type from datasets d
-		where ($1.configuration->'mutant_targets'->>0) = any(array[d.category_name, d.name])
+		where ($1.mutant_configuration -> 'hosts' ->> 0) = any(array[d.category_name, d.name])
 		and d.geography_id = $1.geography_id into x;
 
 	return coalesce(x || '-', '') || 'mutant';
