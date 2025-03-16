@@ -11,7 +11,6 @@ CREATE TABLE public.datasets (
     deployment public.environments[] DEFAULT ARRAY[]::public.environments[],
     flagged boolean DEFAULT false,
     vectors_configuration jsonb,
-    mutant_configuration jsonb,
     category_overrides jsonb DEFAULT 'null'::jsonb,
     source_files jsonb DEFAULT '[]'::jsonb,
     processed_files jsonb DEFAULT '[]'::jsonb,
@@ -22,5 +21,6 @@ CREATE TABLE public.datasets (
     updated_by character varying(64),
     notification_interval text,
     notification_latest date,
+    mutant_configuration jsonb,
     CONSTRAINT datasets_notification_interval_check CHECK ((notification_interval ~ '^[0-9]{1,2} (day|week|month|year)s?$'::text))
 );
