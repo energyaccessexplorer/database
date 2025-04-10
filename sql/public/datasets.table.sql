@@ -22,5 +22,6 @@ CREATE TABLE public.datasets (
     notification_interval text,
     notification_latest date,
     mutant_configuration jsonb,
+    private boolean DEFAULT false,
     CONSTRAINT datasets_notification_interval_check CHECK ((notification_interval ~ '^[0-9]{1,2} (day|week|month|year)s?$'::text))
 );
