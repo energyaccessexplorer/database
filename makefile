@@ -3,7 +3,7 @@ default:
 		--set="ON_ERROR_STOP=on" \
 		--file="snippet.sql"
 
-.include "./database.mk"
 .include "./split.mk"
+.include "./database.mk"
 
 -include .env

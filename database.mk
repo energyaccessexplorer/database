@@ -54,6 +54,7 @@ create:
 
 build:
 	psql ${DB} \
+		--quiet \
 		--set="ON_ERROR_STOP=on" \
 		--file="${schema}"
 
@@ -71,7 +72,8 @@ reload:
 
 .if ${env} == "production"
 rebuild:
-	@ echo "PRODUCTION. Do it by hand: drop create build restore reload"
+	@ echo "PRODUCTION. Do it by hand: join drop create build restore reload"
 .else
-rebuild: drop create join build restore reload
+rebuild:
+	bmake join drop create build restore reload schema=${schemajoin}
 .endif
