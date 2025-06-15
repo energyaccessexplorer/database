@@ -19,6 +19,7 @@
 ./sql/public/category_datatype.function.sql
 ./sql/public/datasets.table.sql
 ./sql/public/category_name.function.sql
+./sql/public/circle.function.sql
 ./sql/public/circles_change_check.function.sql
 ./sql/public/current_user_data.function.sql
 ./sql/public/current_user_email.function.sql
@@ -36,7 +37,6 @@
 ./sql/public/email_change_fail.function.sql
 ./sql/public/event_create.function.sql
 ./sql/public/flagged.function.sql
-./sql/public/geography_circle.function.sql
 ./sql/public/geography_name.function.sql
 ./sql/public/has_subgeographies.function.sql
 ./sql/public/info.function.sql
