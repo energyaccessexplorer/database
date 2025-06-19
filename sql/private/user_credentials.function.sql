@@ -4,7 +4,7 @@
 
 CREATE FUNCTION private.user_credentials() RETURNS void
     LANGUAGE plpgsql SECURITY DEFINER
-    AS $$
+    AS $_$
 declare
 	zero text := '00000000-0000-0000-0000-000000000000';
 	_id  text := current_setting('request.jwt.claims', true)::jsonb->>'id';
@@ -35,4 +35,4 @@ begin
 	perform set_config('user.email', u.email::text, true);
 	perform set_config('user.role',  u.role::text,  true);
 end
-$$;
+$_$;

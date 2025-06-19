@@ -6,7 +6,8 @@ CREATE FUNCTION public.with_access(public.geographies) RETURNS boolean
     LANGUAGE sql
     AS $_$
 	select exists (
-		select 1 from access a where circle = $1.circle
-			and user_id = current_user_id()
+		select 1 from access a
+			where user_id = current_user_id()
+			and circle = ANY ($1.circles)
 	)
 $_$;

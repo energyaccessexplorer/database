@@ -5,7 +5,6 @@
 CREATE TABLE public.users (
     email text NOT NULL,
     about jsonb DEFAULT '{}'::jsonb,
-    data jsonb DEFAULT '{"envs": [], "circles": []}'::jsonb,
     id uuid DEFAULT gen_random_uuid() NOT NULL,
     rwid text,
     disabled boolean DEFAULT false,
