@@ -10,6 +10,7 @@
 ./sql/public/epiphet.domain.sql
 ./sql/public/permission_types.type.sql
 ./sql/public/roles.type.sql
+./sql/authenticator/check_check.function.sql
 ./sql/authenticator/user_upsert.function.sql
 ./sql/private/user_credentials.function.sql
 ./sql/public/access_access.function.sql

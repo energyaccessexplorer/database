@@ -2,3 +2,4 @@
 /migrations
 /snippet*.sql
 /tmp
+/.env
