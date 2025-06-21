@@ -33,6 +33,7 @@
 ./sql/public/geographies.table.sql
 ./sql/public/datasets_count.function.sql
 ./sql/public/datasets_flagged.function.sql
+./sql/public/datasets_permissions_check.function.sql
 ./sql/public/datasets_publish.function.sql
 ./sql/public/datatype.function.sql
 ./sql/public/delete_self.function.sql
@@ -109,6 +110,7 @@
 ./sql/public/access-manager.policy.sql
 ./sql/public/users-manager.policy.sql
 ./sql/public/users-manager_other.policy.sql
+./sql/public/datasets_permissions-managers.policy.sql
 ./sql/public/snapshots-owner.policy.sql
 ./sql/public/categories-public.policy.sql
 ./sql/public/datasets-public_select.policy.sql
