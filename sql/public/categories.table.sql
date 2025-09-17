@@ -21,7 +21,5 @@ CREATE TABLE public.categories (
     created date DEFAULT CURRENT_DATE,
     created_by character varying(64),
     updated timestamp with time zone DEFAULT CURRENT_TIMESTAMP,
-    updated_by character varying(64),
-    circle public.epiphet DEFAULT 'everywhere'::name,
-    deployment public.environments[] DEFAULT ARRAY[]::public.environments[]
+    updated_by character varying(64)
 );
