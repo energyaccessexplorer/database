@@ -5,10 +5,11 @@
 CREATE FUNCTION public.access_check(uid uuid, cir public.epiphet[], dep public.environments[]) RETURNS boolean
     LANGUAGE sql
     AS $$
- 	select exists (
+	select exists (
 		select 1 from access as a
 		where a.user_id = uid
 			and a.circle = ANY (cir)
-			and a.deployment = ANY (dep)
+			and ((cardinality(dep) = 0) -- new/unpopulated
+				 or a.deployment = ANY (dep))
 	);
 $$;
