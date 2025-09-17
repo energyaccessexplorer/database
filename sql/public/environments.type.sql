@@ -4,8 +4,8 @@
 
 CREATE TYPE public.environments AS ENUM (
     'test',
-    'staging',
-    'production',
+    'protected',
+    'public',
     'training',
     'dev'
 );
