@@ -17,7 +17,6 @@
 ./sql/public/access_check.function.sql
 ./sql/public/before_any_create.function.sql
 ./sql/public/before_any_update.function.sql
-./sql/public/categories_before_update.function.sql
 ./sql/public/categories.table.sql
 ./sql/public/category_datatype.function.sql
 ./sql/public/datasets.table.sql
@@ -74,7 +73,6 @@
 ./sql/public/users-users_rwid_key.constraint.sql
 ./sql/public/categories-categories_before_create.trigger.sql
 ./sql/public/categories-categories_before_update.trigger.sql
-./sql/public/categories-categories_deployments.trigger.sql
 ./sql/public/datasets-datasets_before_create.trigger.sql
 ./sql/public/datasets-datasets_before_update.trigger.sql
 ./sql/public/datasets-datasets_flagged.trigger.sql
