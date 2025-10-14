@@ -7,6 +7,7 @@ schemajoin = ./tmp/schema-join-${TIME}.sql
 
 split:
 	@ mkdir -p ./tmp
+
 	@ if [ -d ${SQL} ]; then cp -r ${SQL} ./tmp/${SQL}-${TIME}; fi
 
 	${AWK} \
@@ -26,6 +27,8 @@ diff:
 	|| exit 0
 
 join:
+	@ mkdir -p ./tmp
+
 	@ cp schema-header.sql ${schemajoin}
 
 	@ while read file; do \

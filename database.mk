@@ -18,6 +18,8 @@ console:
 	@ PAGER="less -S" psql ${DB}
 
 dumpschema:
+	@ mkdir -p dumps
+
 	@ pg_dump ${DB} \
 		--verbose \
 		--format=p \
