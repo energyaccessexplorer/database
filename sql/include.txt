@@ -1,11 +1,11 @@
 ./sql/global/authenticator.schema.sql
 ./sql/global/private.schema.sql
 ./sql/global/pgcrypto.extension.sql
-./sql/global/EXTENSION-pgcrypto.comment.sql
+./sql/global/extension-pgcrypto.comment.sql
 ./sql/global/pgjwt.extension.sql
-./sql/global/EXTENSION-pgjwt.comment.sql
+./sql/global/extension-pgjwt.comment.sql
 ./sql/global/unaccent.extension.sql
-./sql/global/EXTENSION-unaccent.comment.sql
+./sql/global/extension-unaccent.comment.sql
 ./sql/public/environments.type.sql
 ./sql/public/epiphet.domain.sql
 ./sql/public/permission_types.type.sql
