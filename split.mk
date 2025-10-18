@@ -1,19 +1,16 @@
-SQL ?= ./sql
+left ?= dumps/schema-latest
+right ?= dumps/join-latest
+
+SQL = ./sql
+TIME != date +'%Y-%m-%d--%T'
+OS != uname -s
 
 AWK = gawk
-COLORDIFF != which colordiff || which cat
+.if ${OS} == "Darwin"
+AWK != which gawk || /opt/homebrew/bin/gawk
+.endif
 
-schemajoin = ./tmp/schema-join-${TIME}.sql
-
-split:
-	@ mkdir -p ./tmp
-
-	@ if [ -d ${SQL} ]; then cp -r ${SQL} ./tmp/${SQL}-${TIME}; fi
-
-	${AWK} \
-		-f split.awk \
-		-v sqldir=${SQL} \
-		${schema}
+schema-join = schema-join-${TIME}.sql
 
 diff:
 	@ diff \
@@ -21,21 +18,28 @@ diff:
 		--ignore-all-space \
 		--ignore-case \
 		--ignore-matching-lines='-- *' \
-		${schema-left} ${schema-right} \
-	| ${COLORDIFF} \
+		${left} ${right} \
 	| less -R \
 	|| exit 0
 
-join:
-	@ mkdir -p ./tmp
+	@ echo "Comparing ${left} and ${right}"
 
-	@ cp schema-header.sql ${schemajoin}
+split:
+	${AWK} \
+		-f split.awk \
+		-v sqldir=${SQL} \
+		${schema}
+
+join:
+	@ cp schema-header.sql dumps/${schema-join}
 
 	@ while read file; do \
-		cat $$file >> ${schemajoin}; \
-		printf "\n\n" >> ${schemajoin}; \
+		cat $$file >> dumps/${schema-join}; \
+		printf "\n\n" >> dumps/${schema-join}; \
 	done <${SQL}/include.txt
 
-	@ cat schema-footer.sql >> ${schemajoin}
+	@ cat schema-footer.sql >> dumps/${schema-join}
 
-	@ echo "Wrote: ${schemajoin}"
+	@ (cd dumps && ln -sf ${schema-join} schema-latest)
+
+	@ echo "Wrote: dumps/${schema-join} (schema-latest)"

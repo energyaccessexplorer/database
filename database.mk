@@ -77,5 +77,5 @@ rebuild:
 	@ echo "PRODUCTION. Do it by hand: join drop create build restore reload"
 .else
 rebuild:
-	bmake join drop create build restore reload schema=${schemajoin}
+	bmake join drop create build restore reload
 .endif

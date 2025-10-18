@@ -11,12 +11,7 @@ function trimblock(str) {
 	return str
 }
 
-function gencode() {
-	if (file == "") {
-		print name
-		exit 1
-	}
-
+function gencode(file) {
 	cmd = "grep " file " " include_txt
 	while ((cmd | getline result) > 0) {
 		exists = result
@@ -24,48 +19,46 @@ function gencode() {
 	close(cmd)
 
 	if (exists != "") {
-		print "OVERLOADED FUNCTION? " file
+		print "OVERLOADED FUNCTION? (This will most likely botch a database rebuild) " file
 		exists = ""
 		content = "\n\n" content
+	} else {
+		print file >> include_txt
 	}
-
-	print file >> include_txt
 
 	if (index(modified, gensub(/\.\//, "", "g", file)) > 0) {
 		modified_list = file "\n" modified_list
 		return
 	}
 
-	print content > file
+	print trimblock(content) > file
 }
 
-function finish_block() {
-	content = trimblock(content)
-
+function finish_block(name, type,    filename) {
 	system("mkdir -p " filepath)
 
-	filename = gensub(/\(.*\)$/, "", "g", name)
-	gsub(/ /, "-", filename)
+	filename = gensub(/\(.*\)$/, "", "g", tolower(gensub(/ /, "-", "g", name)))
 
 	if (type == "ACL") {
-		filename = gensub(/^TABLE-(.*)/, "\\1.table-acl", 1, filename)
-		filename = gensub(/^SCHEMA-(.*)/, "\\1.schema-acl", 1, filename)
+		filename = gensub(/^(.*)-(.*)/, "\\2.\\1-acl", 1, filename)
 	} else {
 		filename = filename "." tolower(gensub(/ /, "-", "g", type))
 	}
 
-	file = filepath "/" filename ".sql"
+	if (type == "FUNCTION") {
+		filename = gensub(/\(.*\)/, "", "g", filename)
+	}
 
 	in_block = 0
 
 	for (i in ignored_blocks) {
-		if (ignored_blocks[i] == name ":" type) {
+		if (ignored_blocks[i] == gensub(/\(.*\)/, "", "g", name) ":" type) {
 			print "IGNORING: " name " " type
 			return
 		}
 	}
 
-	gencode()
+	gencode(filepath "/" filename ".sql")
 }
 
 function include_summary() {
@@ -73,8 +66,8 @@ function include_summary() {
 	removals = sqldir "/.tmp/removals"
 	filesdiff = sqldir "/.tmp/files-diff"
 
-	system("git diff --unified=0 " include_txt " | grep -Po '(?<=^\\+)(?!\\+\\+).*' | sort > " additions)
-	system("git diff --unified=0 " include_txt " | grep -Po '(?<=^\\-)(?!\\-\\-).*' | sort > " removals)
+	system("git diff --unified=0 " include_txt " | grep -E '^\\+[^++].*' | sed 's/^+//' | sort > " additions)
+	system("git diff --unified=0 " include_txt " | grep -E   '^-[^--].*' | sed 's/^-//' | sort > " removals)
 
 	system("diff " additions " " removals " > " filesdiff)
 
@@ -111,8 +104,6 @@ BEGIN {
 	type    = ""
 	schema  = ""
 	content = ""
-	table   = ""
-	toc     = 0
 
 	filepath = ""
 
@@ -128,6 +119,7 @@ BEGIN {
 	split(ignored_blocks_string, ignored_blocks, ",")
 
 	system("mkdir -p " sqldir "/.tmp/")
+	system("touch " include_txt)
 	system("truncate -s 0 " include_txt)
 
 	"git status --porcelain --null sql" | getline modified
@@ -140,7 +132,7 @@ BEGIN {
 
 /^-- Name: [^;]+; Type: [^;]+; Schema: [^;]+;/ {
 	if (content) { # the previous one
-		finish_block()
+		finish_block(name,type)
 	}
 
 	in_block = 1
@@ -150,26 +142,14 @@ BEGIN {
 	type    = gensub(/^.* Type: ([^;]+); .*$/,   "\\1", "g")
 	schema  = gensub(/^.* Schema: ([^;]+); .*$/, "\\1", "g")
 	content = ""
-	table   = ""
 
-	if (schema == "-" || type == "SCHEMA" || type == "EXTENSION" || type == "COMMENT") {
+	if (type == "SCHEMA" || type == "EXTENSION" || type == "COMMENT" || schema == "-") {
 		schema = "global"
 	}
 
 	filepath = sqldir "/" schema
 
 	content = "--\n" $0 "\n--" # we've ignored these comment lines (below in the next block...)
-
-	if (name ~ /[^,] /) {
-		split(name, a, " ")
-		table = a[1]
-	}
-
-	if (a[3]) {
-		print "Too many spaces in name: '" name "'"
-		print "This should NOT happen. We missed something."
-		exit 1
-	}
 
 	next
 }
@@ -187,7 +167,7 @@ in_block &&
 }
 
 /^-- PostgreSQL database dump complete/ {
-	finish_block()
+	finish_block(name,type)
 	exit
 }
 
