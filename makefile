@@ -5,7 +5,7 @@ default:
 		--set="ON_ERROR_STOP=on" \
 		--file="snippet.sql"
 
-.include "./split.mk"
+.include "./split/split.mk"
 .include "./database.mk"
 
 -include .env

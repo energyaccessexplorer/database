@@ -26,20 +26,22 @@ diff:
 
 split:
 	${AWK} \
-		-f split.awk \
+		-f split/split.awk \
 		-v sqldir=${SQL} \
 		${schema}
 
 join:
-	@ cp schema-header.sql dumps/${join}
+	@ cp split/schema-header.sql dumps/${join}
 
 	@ while read file; do \
 		cat $$file >> dumps/${join}; \
 		printf "\n\n" >> dumps/${join}; \
 	done <${SQL}/include.txt
 
-	@ cat schema-footer.sql >> dumps/${join}
+	@ cat split/schema-footer.sql >> dumps/${join}
 
 	@ (cd dumps && ln -sf ${join} schema-latest)
 
 	@ echo "Wrote: dumps/${join} (schema-latest)"
+
+.PHONY: split

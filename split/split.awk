@@ -115,7 +115,7 @@ BEGIN {
 
 	include_txt = sqldir "/include.txt"
 
-	"paste -s -d ',' split-ignored-blocks.txt" | getline ignored_blocks_string
+	"paste -s -d ',' split/ignored-blocks.txt" | getline ignored_blocks_string
 	split(ignored_blocks_string, ignored_blocks, ",")
 
 	system("mkdir -p " sqldir "/.tmp/")
