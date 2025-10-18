@@ -10,7 +10,7 @@ AWK = gawk
 AWK != which gawk || /opt/homebrew/bin/gawk
 .endif
 
-schema-join = schema-join-${TIME}.sql
+join = schema-join-${TIME}.sql
 
 diff:
 	@ diff \
@@ -31,15 +31,15 @@ split:
 		${schema}
 
 join:
-	@ cp schema-header.sql dumps/${schema-join}
+	@ cp schema-header.sql dumps/${join}
 
 	@ while read file; do \
-		cat $$file >> dumps/${schema-join}; \
-		printf "\n\n" >> dumps/${schema-join}; \
+		cat $$file >> dumps/${join}; \
+		printf "\n\n" >> dumps/${join}; \
 	done <${SQL}/include.txt
 
-	@ cat schema-footer.sql >> dumps/${schema-join}
+	@ cat schema-footer.sql >> dumps/${join}
 
-	@ (cd dumps && ln -sf ${schema-join} schema-latest)
+	@ (cd dumps && ln -sf ${join} schema-latest)
 
-	@ echo "Wrote: dumps/${schema-join} (schema-latest)"
+	@ echo "Wrote: dumps/${join} (schema-latest)"

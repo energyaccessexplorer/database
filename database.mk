@@ -25,11 +25,16 @@ dumpschema:
 		--format=p \
 		--no-owner \
 		--schema-only \
+		--file=.tmp-schema-dump \
+		2>/dev/null
+
+	@ cat .tmp-schema-dump \
 		| grep -v '^-- Dependencies *' \
 		| grep -v '^-- TOC *' \
 		| grep -v '^-- Completed on *' \
 		> dumps/schema-${DUMP}
 
+	@ rm .tmp-schema-dump
 	@ (cd dumps && ln -sf schema-${DUMP} schema-latest)
 
 dumpdata:
@@ -55,19 +60,25 @@ create:
 	@ psql ${PG}/template1 --quiet --command "create database ${DB_NAME};"
 
 build:
-	psql ${DB} \
+	@ psql ${DB} \
 		--quiet \
+		--pset="tuples_only=on" \
 		--set="ON_ERROR_STOP=on" \
-		--file="${schema}"
+		--file="${schema}" \
+		>/dev/null
+
+	@ echo "Built using: ${schema}"
 
 restore:
 	@ psql ${DB} \
+		--quiet \
 		--set="ON_ERROR_STOP=on" \
 		--pset="tuples_only=on" \
 		--command="set session_replication_role = replica;" \
-		--file="${data}"
+		--file="${data}" \
+		>/dev/null
 
-	@ echo "Restored from dumpfile: ${data}"
+	@ echo "Restored using: ${data}"
 
 reload:
 	@ psql ${DB} --quiet --command "NOTIFY pgrst, 'reload schema';"
