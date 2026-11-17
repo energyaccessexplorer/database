@@ -1,5 +1,2 @@
-/dumps
-/migrations
-/snippet*.sql
-/tmp
-/.env
+/supabase/.temp/
+/result

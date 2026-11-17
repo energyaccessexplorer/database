@@ -1,0 +1,8 @@
+{
+  "name": "eae-pg-delta",
+  "private": true,
+  "dependencies": {
+    "@supabase/pg-delta": "1.0.0-alpha.60",
+    "@supabase/pg-topo": "1.0.0-alpha.8"
+  }
+}

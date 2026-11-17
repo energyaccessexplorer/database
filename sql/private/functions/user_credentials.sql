@@ -1,0 +1,39 @@
+create or replace function private.user_credentials()
+  returns void
+  language plpgsql
+  security definer
+  set search_path to 'public', 'pg_catalog'
+  AS $function$
+declare
+	zero text := '00000000-0000-0000-0000-000000000000';
+	_id  text := current_setting('request.jwt.claims', true)::jsonb->>'id';
+	u users;
+begin
+	if _id is null then
+		perform set_config('user.id',    zero,   true);
+		perform set_config('user.email', null,   true);
+		perform set_config('user.role', 'guest', true);
+		return;
+	end if;
+
+	if _id ~ '^[0-9a-f]{24}$' then
+		select * from users where rwid = _id into u;
+	else
+		select * from users where id = _id::uuid into u;
+	end if;
+
+	if u is null and then
+		raise exception 'Unknown credentials';
+	end if;
+
+	if u.disabled then
+		raise exception 'User disabled';
+	end if;
+
+	perform set_config('user.id',    u.id::text,    true);
+	perform set_config('user.email', u.email::text, true);
+	perform set_config('user.role',  u.role::text,  true);
+end
+$function$;
+
+revoke all on function "private"."user_credentials"() from public;
