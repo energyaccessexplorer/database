@@ -82,6 +82,11 @@ alter table "public"."datasets"
   add column "suggested_citation_translations" jsonb;
 
 alter table "public"."datasets"
+  add column "paver_params" jsonb;
+
+comment on column "public"."datasets"."paver_params" is 'the parameters paver was run with: {"routine": text, "params": object, "origin": "admin" | "inferred", "check": {"status": text}, "at": timestamp}';
+
+alter table "public"."datasets"
   add constraint "datasets_geography_id_name_key" unique (geography_id, name);
 
 alter table "public"."datasets"
