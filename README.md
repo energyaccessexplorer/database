@@ -56,5 +56,11 @@ disagree.
 	$ DB_URL='…' db migration up
 
 `schema drift` fails when the target was changed outside the migrations.
-`migration up` shows the pending migrations and asks before applying them.
-Supabase reloads PostgREST's schema cache on DDL by itself.
+`migration up` shows the pending migrations and asks before applying them;
+set `DB_YES=1` where nothing can answer the prompt. Supabase reloads
+PostgREST's schema cache on DDL by itself.
+
+The host is the session-mode pooler (`aws-0-<region>.pooler.supabase.com:5432`),
+not `db.<ref>.supabase.co`: that name resolves to IPv6 only, which GitHub
+runners and some networks do not have. Percent-encode the password in the URL
+— the CLI rejects `{}`, `;`, `,`, `&` and `\` in the userinfo.
