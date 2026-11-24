@@ -39,6 +39,11 @@ in by hand, with `sql/` edited to match.
 Commit `sql/` and the migration together; `db schema check` fails when they
 disagree.
 
+Reference data (countries and their flags, `supabase/seeds/*.sql`) travels
+separately from the migrations: `migration up` and `reset` refresh it, and
+`db seed` runs it alone. Rerunning a seed replaces its rows, so corrections
+in the seed file reach every database.
+
 ## Commands
 
 	db migration new <name> [--empty]

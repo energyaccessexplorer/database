@@ -23,7 +23,8 @@ usage: db <command> [args]
   migration new <name> [--empty]  write supabase/migrations/<timestamp>_<name>.sql
                                   with what sql/ adds to the existing migrations;
                                   --empty writes a blank one (data changes)
-  migration up                    apply pending migrations to DB_URL
+  migration up                    apply pending migrations to DB_URL and
+                                  refresh the reference data (seeds)
   migration down [n]              rebuild the local database without the last n
                                   applied migrations (default 1); its data is lost
   migration status                applied and pending migrations on DB_URL
@@ -33,7 +34,10 @@ usage: db <command> [args]
   schema export                   rewrite sql/ from DB_URL
   schema lint                     static load-order checks on sql/
 
+  seed                            replace the reference data in
+                                  supabase/seeds/ (idempotent)
   reset                           recreate the local database from the migrations
+                                  and the seeds
   console                         psql on DB_URL
 
 environment:
@@ -189,6 +193,7 @@ migration_up() {
 		create_local "$(database_of "$DB_URL")"
 	fi
 	push "$DB_URL"
+	seed
 }
 
 migration_down() {
@@ -243,6 +248,17 @@ schema_lint() {
 	pgdelta schema lint --dir "$ROOT/sql"
 }
 
+seed() {
+	local f found=
+	for f in "$ROOT"/supabase/seeds/*.sql; do
+		[ -f "$f" ] || continue
+		found=1
+		echo "Seeding $(basename "$f")"
+		psql "$DB_URL" -X -q -v ON_ERROR_STOP=1 -f "$f"
+	done
+	[ -n "$found" ] || die "no seeds in $ROOT/supabase/seeds"
+}
+
 reset() {
 	require_local reset
 	local name
@@ -250,6 +266,7 @@ reset() {
 	drop_local "$name"
 	create_local "$name"
 	push "$DB_URL"
+	seed
 }
 
 ROOT=$(find_root)
@@ -265,6 +282,7 @@ case "${1:-} ${2:-}" in
 	"schema drift") schema_drift ;;
 	"schema export") schema_export ;;
 	"schema lint") schema_lint ;;
+	"seed "*) seed ;;
 	"reset "*) reset ;;
 	"console "*) psql "$DB_URL" ;;
 	*) usage; [ "${1:-}" = help ] || [ -z "${1:-}" ] || exit 1 ;;
